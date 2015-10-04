@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Database</string>
+    <string name="database_name">MicDatabase</string>
+    <integer name="database_version">1</integer>
+</resources>
