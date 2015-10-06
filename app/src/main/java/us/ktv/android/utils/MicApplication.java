@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import us.ktv.android.utils.databinding.ImagePipelineConfigFactory;
+
 /**
  * Created by nick on 15-10-6.
  */

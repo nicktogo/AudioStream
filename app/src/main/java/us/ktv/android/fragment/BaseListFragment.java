@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import us.ktv.android.utils.OnItemClickListener;
+import us.ktv.android.utils.databinding.OnItemClickListener;
 
 
 public abstract class BaseListFragment<T> extends Fragment implements OnItemClickListener<T> {

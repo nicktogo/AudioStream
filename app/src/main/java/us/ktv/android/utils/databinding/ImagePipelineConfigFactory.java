@@ -1,4 +1,4 @@
-package us.ktv.android.utils;
+package us.ktv.android.utils.databinding;
 
 import android.content.Context;
 

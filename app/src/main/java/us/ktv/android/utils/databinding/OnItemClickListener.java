@@ -1,4 +1,4 @@
-package us.ktv.android.utils;
+package us.ktv.android.utils.databinding;
 
 /**
  * Created by nick on 15-10-6.

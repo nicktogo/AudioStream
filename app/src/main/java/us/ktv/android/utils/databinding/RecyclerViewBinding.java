@@ -1,4 +1,4 @@
-package us.ktv.android.utils;
+package us.ktv.android.utils.databinding;
 
 import android.databinding.BindingAdapter;
 import android.net.Uri;

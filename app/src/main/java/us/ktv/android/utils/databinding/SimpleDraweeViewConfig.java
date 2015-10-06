@@ -1,12 +1,8 @@
-package us.ktv.android.utils;
+package us.ktv.android.utils.databinding;
 
-import android.content.Context;
 import android.net.Uri;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
