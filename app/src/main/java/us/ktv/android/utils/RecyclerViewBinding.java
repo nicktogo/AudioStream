@@ -12,9 +12,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 public class RecyclerViewBinding {
     @SuppressWarnings("unchecked")
     @BindingAdapter("imageUrl")
-    public static void loadImage(SimpleDraweeView mSimpleDraweeView, String url) {
-        if (TextUtils.isEmpty(url)) return;
-        Uri uri = Uri.parse(url);
-        mSimpleDraweeView.setController(SimpleDraweeViewConfig.getDraweeController(SimpleDraweeViewConfig.getImageRequest(uri), mSimpleDraweeView));
+    public static void loadImage(SimpleDraweeView mSimpleDraweeView, String uriStr) {
+        if (!TextUtils.isEmpty(uriStr)) {
+            Uri uri = Uri.parse(uriStr);
+            mSimpleDraweeView.setController(SimpleDraweeViewConfig.getDraweeController(SimpleDraweeViewConfig.getImageRequest(uri), mSimpleDraweeView));
+        }
     }
 }
