@@ -26,7 +26,7 @@ public class SongHelper extends DatamodelHelper<Song> {
     }
 
     @Override
-    protected List<Song> queryList() {
+    public List<Song> queryList() {
         Cursor cursor = sqLiteDatabase.query(SongColumn.TABLE_NAME, null, null, null, null, null, "id");
         List<Song> songs = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -44,7 +44,7 @@ public class SongHelper extends DatamodelHelper<Song> {
     }
 
     @Override
-    protected boolean insert(Song song) {
+    public boolean insert(Song song) {
         ContentValues songValues = new ContentValues();
         songValues.put(SongColumn.ID, song.id);
         songValues.put(SongColumn.NAME, song.name);

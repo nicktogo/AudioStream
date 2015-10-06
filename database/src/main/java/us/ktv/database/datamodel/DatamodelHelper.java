@@ -25,8 +25,8 @@ public abstract class DatamodelHelper<T> {
         sqLiteDatabase = helper.getWritableDatabase();
     }
 
-    protected abstract List<T> queryList();
+    public abstract List<T> queryList();
 
-    protected abstract boolean insert(T t);
+    public abstract boolean insert(T t);
 
 }

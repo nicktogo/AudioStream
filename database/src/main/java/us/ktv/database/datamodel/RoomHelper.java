@@ -27,7 +27,7 @@ public class RoomHelper extends DatamodelHelper<Room> {
     }
 
     @Override
-    protected List<Room> queryList() {
+    public List<Room> queryList() {
         Cursor cursor = sqLiteDatabase.query(RoomColumn.TABLE_NAME, null, null, null, null, null, RoomColumn.ADD_TIME);
         List<Room> list = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -44,7 +44,7 @@ public class RoomHelper extends DatamodelHelper<Room> {
     }
 
     @Override
-    protected boolean insert(Room room) {
+    public boolean insert(Room room) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RoomColumn.ID, room.id);
         contentValues.put(RoomColumn.NAME, room.name);
