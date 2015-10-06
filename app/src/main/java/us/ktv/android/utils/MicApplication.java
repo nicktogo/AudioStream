@@ -24,6 +24,5 @@ public class MicApplication extends Application {
 
     private void initFresco() {
         Fresco.initialize(getApplicationContext(), ImagePipelineConfigFactory.getImagePipelineConfig(getApplicationContext()));
-        Drawables.init(getApplicationContext().getResources());
     }
 }
