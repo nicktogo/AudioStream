@@ -20,12 +20,26 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath parent.ext.libraries.dataBinder
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile parent.libraries.appcompat
     compile parent.libraries.design
     compile parent.libraries.recyclerview
+    compile parent.libraries.cardview
+
+    compile parent.libraries.fresco
+    compile parent.libraries.drawee
 
     compile project(':database')
 }

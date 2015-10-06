@@ -2,10 +2,12 @@ package us.ktv.database.datamodel;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by nick on 15-10-5.
  */
-public class Song {
+public class Song implements Serializable {
     /**
      * {
      "id":"1",
@@ -26,5 +28,4 @@ public class Song {
 
     @SerializedName("cover_url")
     public String coverUrl;
-
 }

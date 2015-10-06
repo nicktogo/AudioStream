@@ -1,12 +1,15 @@
 package us.ktv.android.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import us.ktv.happymic.R;
+import us.ktv.android.R;
+import us.ktv.android.fragment.SongListFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        fragmentManager.executePendingTransactions();
     }
 
     @Override
