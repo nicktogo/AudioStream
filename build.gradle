@@ -21,7 +21,8 @@ allprojects {
 ext.libraries = [
         gson              : 'com.google.code.gson:gson:2.3',
         design            : 'com.android.support:design:23.0.1',
-        appcompat         : 'com.android.support:appcompat-v7:23.0.1'
+        appcompat         : 'com.android.support:appcompat-v7:23.0.1',
+        recyclerview      : 'com.android.support:recyclerview-v7:23.0.1'
 ]
 
 task clean(type: Delete) {

@@ -1,43 +1,32 @@
-package us.ktv.database.database;
+package us.ktv.database.datamodel;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import us.ktv.database.R;
-import us.ktv.database.datamodel.Song;
-import us.ktv.database.datamodel.SongColumn;
-
-
 /**
- * Created by nick on 15-10-4.
+ * Created by nick on 15-10-6.
  */
-public class MicDatabase {
+public class SongHelper extends DatamodelHelper<Song> {
 
-    private static MicDatabase micDatabase;
-    private SQLiteDatabase sqLiteDatabase;
+    private static SongHelper helper;
 
-    private MicDatabase(Context context) {
-        MicDatabaseHelper helper = new MicDatabaseHelper(
-                context,
-                context.getResources().getString(R.string.database_name),
-                null,
-                context.getResources().getInteger(R.integer.database_version));
-        sqLiteDatabase = helper.getWritableDatabase();
+    private SongHelper(Context context) {
+        super(context);
     }
 
-    public synchronized static MicDatabase getInstance(Context context) {
-        if (micDatabase == null) {
-            micDatabase = new MicDatabase(context);
+    public synchronized static SongHelper getInstance(Context context) {
+        if (helper == null) {
+            helper = new SongHelper(context);
         }
-        return micDatabase;
+        return helper;
     }
 
-    public List<Song> querySongList() {
+    @Override
+    protected List<Song> queryList() {
         Cursor cursor = sqLiteDatabase.query(SongColumn.TABLE_NAME, null, null, null, null, null, "id");
         List<Song> songs = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -50,18 +39,17 @@ public class MicDatabase {
                 songs.add(song);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return songs;
     }
 
-    public boolean insertSong(Song song) {
-
+    @Override
+    protected boolean insert(Song song) {
         ContentValues songValues = new ContentValues();
         songValues.put(SongColumn.ID, song.id);
         songValues.put(SongColumn.NAME, song.name);
         songValues.put(SongColumn.SINGER, song.singer);
         songValues.put(SongColumn.COVER_URL, song.coverUrl);
-
         return sqLiteDatabase.insert(SongColumn.TABLE_NAME, null, songValues) != -1;
     }
-
 }
