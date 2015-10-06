@@ -3,7 +3,7 @@ package us.ktv.android;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import us.ktv.database.Utils.GsonUtils;
+import us.ktv.database.utils.GsonUtils;
 import us.ktv.database.datamodel.Song;
 import us.ktv.database.datamodel.SongHelper;
 

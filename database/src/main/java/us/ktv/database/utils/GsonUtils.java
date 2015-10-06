@@ -1,4 +1,4 @@
-package us.ktv.database.Utils;
+package us.ktv.database.utils;
 
 import com.google.gson.Gson;
 
