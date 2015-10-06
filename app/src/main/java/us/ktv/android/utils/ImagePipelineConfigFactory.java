@@ -20,32 +20,30 @@ public class ImagePipelineConfigFactory {
     public static final int MAX_DISK_CACHE_SIZE = 40 * ByteConstants.MB;
     public static final int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 4;
 
-    private static ImagePipelineConfig sImagePipelineConfig;
+    private static ImagePipelineConfig imagePipelineConfig;
 
     /**
      * Creates config using android http stack as network backend.
      */
     public static ImagePipelineConfig getImagePipelineConfig(Context context) {
-        if (sImagePipelineConfig == null) {
+        if (imagePipelineConfig == null) {
             ImagePipelineConfig.Builder configBuilder = ImagePipelineConfig.newBuilder(context);
             configureCaches(configBuilder, context);
-            sImagePipelineConfig = configBuilder.build();
+            imagePipelineConfig = configBuilder.build();
         }
-        return sImagePipelineConfig;
+        return imagePipelineConfig;
     }
 
     /**
      * Configures disk and memory cache not to exceed common limits
      */
-    private static void configureCaches(
-            ImagePipelineConfig.Builder configBuilder,
-            Context context) {
+    private static void configureCaches(ImagePipelineConfig.Builder configBuilder, Context context) {
         final MemoryCacheParams bitmapCacheParams = new MemoryCacheParams(
                 MAX_MEMORY_CACHE_SIZE, // Max total size of elements in the cache
-                Integer.MAX_VALUE,                     // Max entries in the cache
+                Integer.MAX_VALUE,     // Max entries in the cache
                 MAX_MEMORY_CACHE_SIZE, // Max total size of elements in eviction queue
-                Integer.MAX_VALUE,                     // Max length of eviction queue
-                Integer.MAX_VALUE);                    // Max cache entry size
+                Integer.MAX_VALUE,     // Max length of eviction queue
+                Integer.MAX_VALUE);    // Max cache entry size
         configBuilder
                 .setBitmapMemoryCacheParamsSupplier(
                         new Supplier<MemoryCacheParams>() {
