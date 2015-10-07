@@ -3,6 +3,8 @@ package us.ktv.android.fragment;
 import android.os.Bundle;
 import android.view.View;
 
+import us.ktv.android.BR;
+import us.ktv.android.R;
 import us.ktv.android.utils.MicApplication;
 import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.RoomHelper;
@@ -16,8 +18,8 @@ public class RoomListFragment extends BaseListFragment<Room> {
         super();
     }
 
-    public static SongListFragment newInstance(int itemLayoutId) {
-        SongListFragment fragment = new SongListFragment();
+    public static RoomListFragment newInstance(int itemLayoutId) {
+        RoomListFragment fragment = new RoomListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(BaseListFragment.ITEM_LAYOUT_ID, itemLayoutId);
         fragment.setArguments(bundle);
@@ -42,12 +44,12 @@ public class RoomListFragment extends BaseListFragment<Room> {
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.item_song;
     }
 
     @Override
     protected int getVariable() {
-        return 0;
+        return BR.room;
     }
 
     @Override

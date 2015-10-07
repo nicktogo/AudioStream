@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import us.ktv.android.R;
+import us.ktv.android.fragment.RoomListFragment;
 import us.ktv.android.fragment.SongListFragment;
 
 
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song);
+        RoomListFragment fragment = RoomListFragment.newInstance(R.layout.item_room);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         fragmentManager.executePendingTransactions();
