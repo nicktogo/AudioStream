@@ -38,9 +38,11 @@
                 fresco:retryImageScaleType="centerCrop"
                 fresco:roundAsCircle="true"
                 app:imageUrl="@{song.coverUrl}"
+                android:id="@+id/cover"
                 android:layout_width="@dimen/image_view_width"
                 android:layout_height="@dimen/image_view_height"
-                android:layout_marginEnd="@dimen/list_item_left_right_margin" />
+                android:layout_marginEnd="@dimen/list_item_left_right_margin"
+                android:transitionName="@string/cover_common_name" />
 
             <RelativeLayout
                 android:layout_width="0dp"

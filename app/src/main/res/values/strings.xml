@@ -3,5 +3,11 @@
     <string name="action_settings">Settings</string>
 
 <!-- TODO: Remove or change this placeholder text -->
+    <string name="play">Play</string>
+    <string name="cover_common_name">cover</string>
+
+<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <integer name="anim_duration_long">1000</integer>
 </resources>

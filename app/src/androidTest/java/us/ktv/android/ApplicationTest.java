@@ -3,6 +3,8 @@ package us.ktv.android;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
+import us.ktv.database.datamodel.Room;
+import us.ktv.database.datamodel.RoomHelper;
 import us.ktv.database.utils.GsonUtils;
 import us.ktv.database.datamodel.Song;
 import us.ktv.database.datamodel.SongHelper;
@@ -19,6 +21,12 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             "     \"cover_url\":\"http://img1.kwcdn.kuwo.cn/star/albumcover/240/22/76/1300305679.jpg\"\n" +
             "     }";
 
+    private static final String TEXT_DATA_ROOM_JSON = "{\n" +
+            "\"id\":\"MSEFAPWO\",\n" +
+            "\"name\":\"YoYo\",\n" +
+            "\"add_time\":\"2015/10/8\"\n" +
+            "}";
+
     public ApplicationTest() {
         super(Application.class);
     }
@@ -34,6 +42,13 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         Song song = GsonUtils.JsonToObject(TEXT_DATA_SONG_JSON, Song.class);
         SongHelper helper = SongHelper.getInstance(mContext);
         assertEquals(true, helper.insert(song));
+    }
+
+    public void testRoomHelper() {
+        create();
+        Room room = GsonUtils.JsonToObject(TEXT_DATA_ROOM_JSON, Room.class);
+        RoomHelper helper = RoomHelper.getInstance(mContext);
+        assertEquals(true, helper.insert(room));
     }
 
 }

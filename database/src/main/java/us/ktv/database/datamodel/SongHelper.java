@@ -3,6 +3,7 @@ package us.ktv.database.datamodel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +32,25 @@ public class SongHelper extends DatamodelHelper<Song> {
         List<Song> songs = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                Song song = new Song();
-                song.id = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.ID));
-                song.name = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.NAME));
-                song.singer = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.SINGER));
-                song.coverUrl = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.COVER_URL));
+                Song song = getSong(cursor);
                 songs.add(song);
             } while (cursor.moveToNext());
         }
         cursor.close();
         return songs;
+    }
+
+    @Override
+    public Song queryById(String id) {
+        Song song = null;
+        if (!TextUtils.isEmpty(id)) {
+            Cursor cursor = sqLiteDatabase.query(SongColumn.TABLE_NAME, null, SongColumn.ID + " = ?", new String[] {id}, null, null, null);
+            if (cursor.moveToFirst()) {
+                song = getSong(cursor);
+            }
+            cursor.close();
+        }
+        return song;
     }
 
     @Override
@@ -52,4 +62,6 @@ public class SongHelper extends DatamodelHelper<Song> {
         songValues.put(SongColumn.COVER_URL, song.coverUrl);
         return sqLiteDatabase.insert(SongColumn.TABLE_NAME, null, songValues) != -1;
     }
+
+
 }

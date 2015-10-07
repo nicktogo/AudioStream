@@ -18,7 +18,7 @@ import us.ktv.android.utils.databinding.OnItemClickListener;
 
 public abstract class BaseListFragment<T> extends Fragment implements OnItemClickListener<T> {
 
-//    protected OnFragmentInteractionListener mListener;
+    protected OnFragmentTransactionListener mListener;
 
     public static final String ITEM_LAYOUT_ID = "item_layout_id";
 
@@ -68,13 +68,6 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-
     protected abstract int getLayoutId();
 
     protected abstract int getVariable();
@@ -82,34 +75,24 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        try {
+            mListener = (OnFragmentTransactionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentTransactionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        public void onFragmentInteraction(Uri uri);
-//    }
+    public interface OnFragmentTransactionListener {
+        // TODO: Update argument type and name
+        void onFragmentTransaction(Object o, Fragment oldFragment);
+    }
 
     protected class DataAdapter extends RecyclerView.Adapter<DataAdapter.ItemViewHolder> {
 

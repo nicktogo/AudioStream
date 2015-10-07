@@ -44,7 +44,7 @@ public class RoomListFragment extends BaseListFragment<Room> {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.item_song;
+        return R.layout.fragment_room_list;
     }
 
     @Override
@@ -54,6 +54,7 @@ public class RoomListFragment extends BaseListFragment<Room> {
 
     @Override
     public void onClick(Room room) {
-
+        //TODO SocketHelper connect!
+        mListener.onFragmentTransaction(room, this);
     }
 }

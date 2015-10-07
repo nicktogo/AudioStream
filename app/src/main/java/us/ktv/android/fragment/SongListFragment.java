@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import butterknife.InjectView;
 import us.ktv.android.BR;
 import us.ktv.android.R;
 import us.ktv.android.utils.MicApplication;
@@ -55,6 +58,6 @@ public class SongListFragment extends BaseListFragment<Song> {
 
     @Override
     public void onClick(Song song) {
-        Toast.makeText(MicApplication.getInstance(), song.name, Toast.LENGTH_SHORT).show();
+        mListener.onFragmentTransaction(song, this);
     }
 }
