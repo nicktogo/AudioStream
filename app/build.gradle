@@ -41,5 +41,7 @@ dependencies {
     compile parent.libraries.fresco
     compile parent.libraries.drawee
 
+    compile parent.libraries.butterknife
+
     compile project(':database')
 }
