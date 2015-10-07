@@ -44,4 +44,5 @@ dependencies {
     compile parent.libraries.butterknife
 
     compile project(':database')
+    compile project(':network')
 }
