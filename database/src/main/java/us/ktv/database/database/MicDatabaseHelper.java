@@ -21,6 +21,7 @@ public class MicDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_SONGS = "CREATE TABLE " + SongColumn.TABLE_NAME + "(" +
             SongColumn.ID + " text primary key, " +
+            SongColumn.ROOM_ID + " text, " +
             SongColumn.NAME + " text, " +
             SongColumn.SINGER + " text, " +
             SongColumn.COVER_URL + " text" +

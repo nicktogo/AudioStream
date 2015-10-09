@@ -53,14 +53,37 @@ public class SongHelper extends DatamodelHelper<Song> {
         return song;
     }
 
+    public List<Song> queryListByRoomId(String roomId) {
+        Cursor cursor = sqLiteDatabase.query(SongColumn.TABLE_NAME, null, SongColumn.ROOM_ID + " = ?", new String[] {roomId}, null, null, "id");
+        List<Song> songs = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Song song = getSong(cursor);
+                songs.add(song);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return songs;
+    }
+
     @Override
     public boolean insert(Song song) {
         ContentValues songValues = new ContentValues();
         songValues.put(SongColumn.ID, song.id);
+        songValues.put(SongColumn.ROOM_ID, song.roomId);
         songValues.put(SongColumn.NAME, song.name);
         songValues.put(SongColumn.SINGER, song.singer);
         songValues.put(SongColumn.COVER_URL, song.coverUrl);
         return sqLiteDatabase.insert(SongColumn.TABLE_NAME, null, songValues) != -1;
+    }
+
+    public void insertList(String roomId, List<Song> list) {
+        if (list != null) {
+            for (Song song : list) {
+                song.roomId = roomId;
+                insert(song);
+            }
+        }
     }
 
 

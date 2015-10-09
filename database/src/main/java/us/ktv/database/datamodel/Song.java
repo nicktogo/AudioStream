@@ -28,4 +28,6 @@ public class Song implements Serializable {
 
     @SerializedName("cover_url")
     public String coverUrl;
+
+    public String roomId;
 }

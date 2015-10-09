@@ -1,21 +1,38 @@
 package us.ktv.android;
 
-import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import us.ktv.network.SocketCallbackListener;
+import us.ktv.network.SocketHelper;
 
 /**
  * Created by nick on 15-10-6.
  */
 public class Presenter {
-    private AppCompatActivity activity;
-    public Presenter(AppCompatActivity activity) {
-        this.activity = activity;
+    private SocketHelper helper;
+
+    private static Presenter presenter;
+
+    private Presenter() {
+        helper = new SocketHelper();
     }
 
-    protected void onAddRoomFabClick(View view) {
-        ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.show();
+    public synchronized static Presenter getPresenter() {
+        if (presenter == null) {
+            presenter = new Presenter();
+
+        }
+        return presenter;
+    }
+
+    public void connect(String ip, int port, SocketCallbackListener listener) {
+        helper.connect(ip, port, listener);
+    }
+
+    public void start(SocketCallbackListener listener) {
+        helper.startRecord(listener);
+    }
+
+    public void stop(boolean stop) {
+        helper.setIsRecording(stop);
     }
 
 }

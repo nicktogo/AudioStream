@@ -18,7 +18,7 @@ import us.ktv.android.utils.databinding.OnItemClickListener;
 
 public abstract class BaseListFragment<T> extends Fragment implements OnItemClickListener<T> {
 
-    protected OnFragmentTransactionListener mListener;
+    protected OnFragmentInteractionListener mListener;
 
     public static final String ITEM_LAYOUT_ID = "item_layout_id";
 
@@ -76,10 +76,10 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentTransactionListener) activity;
+            mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentTransactionListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -89,8 +89,8 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
         mListener = null;
     }
 
-    public interface OnFragmentTransactionListener {
-        void onFragmentTransaction(Object o, View view);
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Object o, View view);
     }
 
     protected class DataAdapter extends RecyclerView.Adapter<DataAdapter.ItemViewHolder> {

@@ -1,8 +1,10 @@
 package us.ktv.android.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import butterknife.ButterKnife;
 import us.ktv.android.BR;
 import us.ktv.android.R;
 import us.ktv.android.utils.MicApplication;
@@ -40,6 +42,14 @@ public class RoomListFragment extends BaseListFragment<Room> {
         RoomHelper helper = RoomHelper.getInstance(MicApplication.getInstance());
         list = helper.queryList();
         updateAdapter();
+
+        ButterKnife.findById(view, R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFragmentInteraction(null, v);
+            }
+        });
+
     }
 
     @Override
@@ -55,6 +65,6 @@ public class RoomListFragment extends BaseListFragment<Room> {
     @Override
     public void onClick(Room room, View view) {
         //TODO SocketHelper connect!
-        mListener.onFragmentTransaction(room, view);
+        mListener.onFragmentInteraction(room, view);
     }
 }

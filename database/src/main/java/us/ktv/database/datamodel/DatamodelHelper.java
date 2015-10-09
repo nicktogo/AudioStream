@@ -35,6 +35,7 @@ public abstract class DatamodelHelper<T> {
     protected Song getSong(Cursor cursor) {
         Song song = new Song();
         song.id = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.ID));
+        song.roomId = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.ROOM_ID));
         song.name = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.NAME));
         song.singer = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.SINGER));
         song.coverUrl = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.COVER_URL));

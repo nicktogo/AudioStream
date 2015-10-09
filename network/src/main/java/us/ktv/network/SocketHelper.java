@@ -20,23 +20,25 @@ public class SocketHelper {
 
     private boolean isRecording;
 
-    public void connect(final String ip, final String port, final SocketCallbackListener listener) {
+    public void connect(final String ip, final int port, final SocketCallbackListener listener) {
         if (socket == null) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        socket = new Socket(ip, Integer.parseInt(port));
+                        socket = new Socket(ip, port);
                         socketOutput = new DataOutputStream(socket.getOutputStream());
                         socketInput = new DataInputStream(socket.getInputStream());
                         //TODO
                         //send get song list request and receive json
                         socketOutput.writeUTF("GET@SONGLIST");
-                        String songList = null;
-                        while  (!((songList = socketInput.readUTF()) == null)) {
-                            listener.onConnect(songList);
+                        String songList;
+                        while (true) {
+                            if (!((songList = socketInput.readUTF()) == null)) {
+                                listener.onConnect(ip + ":" + port, songList);
+                                break;
+                            }
                         }
-                        listener.onConnect(songList);
                     } catch (Exception e) {
                         listener.onError(e);
                     }

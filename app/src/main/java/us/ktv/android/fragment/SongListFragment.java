@@ -2,13 +2,10 @@ package us.ktv.android.fragment;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import com.facebook.drawee.view.SimpleDraweeView;
-
-import butterknife.InjectView;
 import us.ktv.android.BR;
 import us.ktv.android.R;
+import us.ktv.android.activity.AddRoomActivity;
 import us.ktv.android.utils.MicApplication;
 import us.ktv.database.datamodel.Song;
 import us.ktv.database.datamodel.SongHelper;
@@ -18,14 +15,17 @@ import us.ktv.database.datamodel.SongHelper;
  */
 public class SongListFragment extends BaseListFragment<Song> {
 
+    private String roomId;
+
     public SongListFragment() {
         super();
     }
 
-    public static SongListFragment newInstance(int itemLayoutId) {
+    public static SongListFragment newInstance(int itemLayoutId, String roomId) {
         SongListFragment fragment = new SongListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(BaseListFragment.ITEM_LAYOUT_ID, itemLayoutId);
+        bundle.putString(AddRoomActivity.ROOM_ID, roomId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -35,6 +35,7 @@ public class SongListFragment extends BaseListFragment<Song> {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             itemLayoutId = getArguments().getInt(BaseListFragment.ITEM_LAYOUT_ID);
+            roomId = getArguments().getString(AddRoomActivity.ROOM_ID);
         }
     }
 
@@ -42,7 +43,7 @@ public class SongListFragment extends BaseListFragment<Song> {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
-        list = helper.queryList();
+        list = helper.queryListByRoomId(roomId);
         updateAdapter();
     }
 
@@ -58,6 +59,6 @@ public class SongListFragment extends BaseListFragment<Song> {
 
     @Override
     public void onClick(Song song, View view) {
-        mListener.onFragmentTransaction(song, view);
+        mListener.onFragmentInteraction(song, view);
     }
 }

@@ -5,14 +5,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".utils.MicApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="us.ktv.android.utils.MicApplication" >
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="us.ktv.android.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -20,6 +20,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.AddRoomActivity"
+            android:label="@string/title_activity_add_room"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert">
         </activity>
     </application>
 

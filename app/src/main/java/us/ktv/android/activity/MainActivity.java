@@ -1,12 +1,12 @@
 package us.ktv.android.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.ChangeBounds;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -18,7 +18,6 @@ import android.view.View;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import us.ktv.android.R;
 import us.ktv.android.fragment.BaseListFragment;
 import us.ktv.android.fragment.PlaySongFragment;
@@ -28,7 +27,9 @@ import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.Song;
 
 
-public class MainActivity extends AppCompatActivity implements BaseListFragment.OnFragmentTransactionListener{
+public class MainActivity extends AppCompatActivity implements BaseListFragment.OnFragmentInteractionListener {
+
+    private static final int REQUEST_ROOM_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,20 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         fragmentManager.executePendingTransactions();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ROOM_ID) {
+            if (resultCode == RESULT_OK) {
+                String roomId = data.getStringExtra(AddRoomActivity.ROOM_ID);
+                SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, roomId);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
     }
 
     @Override
@@ -66,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
     }
 
     @Override
-    public void onFragmentTransaction(Object o, View view) {
+    public void onFragmentInteraction(Object o, View view) {
         if (o instanceof Room) {
             Room room = (Room) o;
-            SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song);
+            SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, room.id);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment)
                     .addToBackStack(null)
@@ -99,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                         .addToBackStack(null)
                         .commit();
             }
+        } else if (view instanceof FloatingActionButton) {
+            Intent intent = new Intent(this, AddRoomActivity.class);
+            startActivityForResult(intent, REQUEST_ROOM_ID);
         }
     }
 }
