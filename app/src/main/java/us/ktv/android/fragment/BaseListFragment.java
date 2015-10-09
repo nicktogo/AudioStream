@@ -90,8 +90,7 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
     }
 
     public interface OnFragmentTransactionListener {
-        // TODO: Update argument type and name
-        void onFragmentTransaction(Object o, Fragment oldFragment);
+        void onFragmentTransaction(Object o, View view);
     }
 
     protected class DataAdapter extends RecyclerView.Adapter<DataAdapter.ItemViewHolder> {
@@ -109,14 +108,14 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
         }
 
         @Override
-        public void onBindViewHolder(DataAdapter.ItemViewHolder holder, int position) {
+        public void onBindViewHolder(final DataAdapter.ItemViewHolder holder, int position) {
             final T t = list.get(position);
             holder.binding.setVariable(getVariable(), t);
             holder.binding.executePendingBindings();
             holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    BaseListFragment.this.onClick(t);
+                    BaseListFragment.this.onClick(t, holder.binding.getRoot());
                 }
             });
         }

@@ -53,8 +53,8 @@ public class RoomListFragment extends BaseListFragment<Room> {
     }
 
     @Override
-    public void onClick(Room room) {
+    public void onClick(Room room, View view) {
         //TODO SocketHelper connect!
-        mListener.onFragmentTransaction(room, this);
+        mListener.onFragmentTransaction(room, view);
     }
 }

@@ -57,7 +57,7 @@ public class SongListFragment extends BaseListFragment<Song> {
     }
 
     @Override
-    public void onClick(Song song) {
-        mListener.onFragmentTransaction(song, this);
+    public void onClick(Song song, View view) {
+        mListener.onFragmentTransaction(song, view);
     }
 }

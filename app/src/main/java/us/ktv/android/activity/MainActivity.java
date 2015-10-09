@@ -1,13 +1,24 @@
 package us.ktv.android.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import us.ktv.android.R;
 import us.ktv.android.fragment.BaseListFragment;
 import us.ktv.android.fragment.PlaySongFragment;
@@ -55,33 +66,39 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
     }
 
     @Override
-    public void onFragmentTransaction(Object o, Fragment oldFragment) {
+    public void onFragmentTransaction(Object o, View view) {
         if (o instanceof Room) {
             Room room = (Room) o;
             SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment)
+                    .addToBackStack(null)
                     .commit();
         } else if (o instanceof Song) {
             Song song = (Song) o;
             PlaySongFragment fragment = PlaySongFragment.newInstance(song.id);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
 
-            //TODO how to get a view from databinding???
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                Slide slideTransaction = new Slide(Gravity.END);
-//                slideTransaction.setDuration(1000);
-//                fragment.setEnterTransition(slideTransaction);
-//
-//                ChangeBounds changeBounds = (ChangeBounds)TransitionInflater.from(this).inflateTransition(R.transition.change_bounds);
-//                fragment.setSharedElementEnterTransition(changeBounds);
-//
-//                getFragmentManager().beginTransaction()
-//                        .replace(R.id.container, fragment)
-//                        .addSharedElement()
-//            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Slide slideTransaction = new Slide(Gravity.LEFT);
+                slideTransaction.setDuration(100);
+                fragment.setEnterTransition(slideTransaction);
+
+                Transition changeBounds = TransitionInflater.from(this).inflateTransition(R.transition.change_bounds);
+                fragment.setSharedElementEnterTransition(changeBounds);
+
+                SimpleDraweeView cover = ButterKnife.findById(view, R.id.cover);
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .addSharedElement(cover, getString(R.string.cover_common_name))
+                        .addToBackStack(null)
+                        .commit();
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
         }
     }
 }
