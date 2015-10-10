@@ -23,9 +23,9 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             "}";
 
     private static final String TEXT_DATA_ROOM_JSON = "{\n" +
-            "\"id\":\"MSEFAPWO\",\n" +
-            "\"name\":\"YoYo\",\n" +
-            "\"add_time\":\"2015/10/8\"\n" +
+            "    \"id\":\"192.168.1.1:8989\",\n" +
+            "    \"name\":\"192.168.1.1:8989\",\n" +
+            "    \"add_time\":\"2015/10/8\"\n" +
             "}";
 
     public ApplicationTest() {
