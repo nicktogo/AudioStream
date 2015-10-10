@@ -24,7 +24,7 @@
         <activity
             android:name=".activity.AddRoomActivity"
             android:label="@string/title_activity_add_room"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert">
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
         </activity>
     </application>
 
