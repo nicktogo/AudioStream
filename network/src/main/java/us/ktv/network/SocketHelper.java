@@ -72,7 +72,7 @@ public class SocketHelper {
             public void run() {
                 byte[] audio = new byte[bufferSize];
                 listener.onConnect(null, null);
-                while (isRecording) {
+                while (isRecording()) {
                     recorder.read(audio, 0, audio.length);
                     try {
                         socketOutput.write(audio, 0, audio.length);
