@@ -71,6 +71,7 @@ public class SocketHelper {
             @Override
             public void run() {
                 byte[] audio = new byte[bufferSize];
+                listener.onConnect(null, null);
                 while (isRecording) {
                     recorder.read(audio, 0, audio.length);
                     try {
