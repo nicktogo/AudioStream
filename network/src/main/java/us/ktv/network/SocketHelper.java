@@ -18,6 +18,8 @@ public class SocketHelper {
     private DataOutputStream socketOutput;
     private DataInputStream socketInput;
 
+    private boolean isConnected = false;
+
     private boolean isRecording;
 
     public void connect(final String ip, final int port, final SocketCallbackListener listener) {
@@ -36,6 +38,7 @@ public class SocketHelper {
                         while (true) {
                             if (!((songList = socketInput.readUTF()) == null)) {
                                 listener.onConnect(ip + ":" + port, songList);
+                                isConnected = true;
                                 break;
                             }
                         }
@@ -93,5 +96,9 @@ public class SocketHelper {
 
     public void setIsRecording(boolean isRecording) {
         this.isRecording = isRecording;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 }

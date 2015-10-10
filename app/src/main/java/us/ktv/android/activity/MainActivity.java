@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                         .replace(R.id.container, fragment)
                         .addToBackStack(null)
                         .commit();
+            } else if (resultCode == RESULT_FIRST_USER){
+                Toast.makeText(MainActivity.this, "Connect failed, please check your network", Toast.LENGTH_SHORT).show();
             }
         }
     }

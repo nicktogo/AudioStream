@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -122,6 +124,7 @@ public class AddRoomActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(Exception e) {
+//                    Toast.makeText(AddRoomActivity.this, "Connect failed, please check your network", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             });
@@ -186,8 +189,10 @@ public class AddRoomActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             Presenter presenter = Presenter.getPresenter();
-            presenter.connect(ip, port, listener);
-            return ip + ":" + port;
+            if (presenter.connect(ip, port, listener)) {
+                return ip + ":" + port;
+            }
+            return null;
         }
 
         @Override
@@ -195,7 +200,7 @@ public class AddRoomActivity extends AppCompatActivity {
             addRoomTask = null;
             Intent returnIntent = new Intent();
             returnIntent.putExtra(ROOM_ID, roomId);
-            setResult(RESULT_OK, returnIntent);
+            setResult(roomId != null ? RESULT_OK : RESULT_FIRST_USER, returnIntent);
             showProgress(false);
             finish();
         }

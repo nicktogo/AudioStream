@@ -23,8 +23,9 @@ public class Presenter {
         return presenter;
     }
 
-    public void connect(String ip, int port, SocketCallbackListener listener) {
+    public boolean connect(String ip, int port, SocketCallbackListener listener) {
         helper.connect(ip, port, listener);
+        return helper.isConnected();
     }
 
     public void start(SocketCallbackListener listener) {
