@@ -15,11 +15,12 @@ import us.ktv.database.datamodel.SongHelper;
 public class ApplicationTest extends ApplicationTestCase<Application> {
 
     private static final String TEXT_DATA_SONG_JSON = "{\n" +
-            "     \"id\":\"1\",\n" +
-            "     \"name\":\"七里香\",\n" +
-            "     \"singer\":\"周杰伦\",\n" +
-            "     \"cover_url\":\"http://img1.kwcdn.kuwo.cn/star/albumcover/240/22/76/1300305679.jpg\"\n" +
-            "     }";
+            "    \"id\":\"1\",\n" +
+            "    \"room_id\":\"192.168.1.1:8989\",\n" +
+            "    \"name\":\"七里香\",\n" +
+            "    \"singer\":\"周杰伦\",\n" +
+            "    \"cover_url\":\"http://img1.kwcdn.kuwo.cn/star/albumcover/240/22/76/1300305679.jpg\"\n" +
+            "}";
 
     private static final String TEXT_DATA_ROOM_JSON = "{\n" +
             "\"id\":\"MSEFAPWO\",\n" +
