@@ -22,7 +22,7 @@ public class SocketHelper {
 
     private boolean isRecording;
 
-    public void connect(final String ip, final int port, final SocketCallbackListener listener) {
+    public boolean connect(final String ip, final int port, final SocketCallbackListener listener) {
         if (socket == null) {
             new Thread(new Runnable() {
                 @Override
@@ -48,6 +48,7 @@ public class SocketHelper {
                 }
             }).start();
         }
+        return isConnected;
     }
 
     public void startRecord(String songId, final SocketCallbackListener listener) {
@@ -103,9 +104,5 @@ public class SocketHelper {
 
     public void setIsRecording(boolean isRecording) {
         this.isRecording = isRecording;
-    }
-
-    public boolean isConnected() {
-        return isConnected;
     }
 }

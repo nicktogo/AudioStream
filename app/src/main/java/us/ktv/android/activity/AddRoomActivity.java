@@ -186,10 +186,8 @@ public class AddRoomActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             Presenter presenter = Presenter.getPresenter();
-            if (presenter.connect(ip, port, listener)) {
-                return ip + ":" + port;
-            }
-            return null;
+            presenter.connect(ip, port, listener);
+            return ip + ":" + port;
         }
 
         @Override
