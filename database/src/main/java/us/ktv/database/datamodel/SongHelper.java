@@ -81,7 +81,9 @@ public class SongHelper extends DatamodelHelper<Song> {
 
     public void insertList(String roomId, List<Song> list) {
         if (list != null) {
+            int id = 1;
             for (Song song : list) {
+                song.id = String.valueOf(id++);
                 song.roomId = roomId;
                 insert(song);
             }
