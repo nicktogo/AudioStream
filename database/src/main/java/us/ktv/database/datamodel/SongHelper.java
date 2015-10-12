@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class SongHelper extends DatamodelHelper<Song> {
 
+    public boolean isUpdated = false;
+
     private static SongHelper helper;
 
     private SongHelper(Context context) {
@@ -84,6 +86,7 @@ public class SongHelper extends DatamodelHelper<Song> {
                 insert(song);
             }
         }
+        isUpdated = true;
     }
 
 

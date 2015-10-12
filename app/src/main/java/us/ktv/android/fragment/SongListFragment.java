@@ -45,6 +45,19 @@ public class SongListFragment extends BaseListFragment<Song> {
         SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
         list = helper.queryListByRoomId(roomId);
         updateAdapter();
+        refresh();
+    }
+
+    protected void refresh() {
+        while (true) {
+            SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
+            if (helper.isUpdated) {
+                helper.isUpdated = false;
+                list = helper.queryListByRoomId(roomId);
+                updateAdapter();
+                break;
+            }
+        }
     }
 
     @Override
