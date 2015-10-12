@@ -72,7 +72,7 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
 
         switch (text) {
             case "Stop" :
-                presenter.stop(false);
+                presenter.stop();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

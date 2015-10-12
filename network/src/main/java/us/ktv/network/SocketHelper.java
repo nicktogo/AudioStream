@@ -105,4 +105,13 @@ public class SocketHelper {
     public void setIsRecording(boolean isRecording) {
         this.isRecording = isRecording;
     }
+
+    public void stop() {
+        setIsRecording(false);
+        try {
+            socketOutput.writeUTF("STOP");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

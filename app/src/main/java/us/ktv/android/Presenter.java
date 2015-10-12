@@ -31,8 +31,8 @@ public class Presenter {
         helper.startRecord(songName, listener);
     }
 
-    public void stop(boolean stop) {
-        helper.setIsRecording(stop);
+    public void stop() {
+        helper.stop();
     }
 
 }
