@@ -28,8 +28,8 @@ public class Presenter {
         return helper.isConnected();
     }
 
-    public void start(SocketCallbackListener listener) {
-        helper.startRecord(listener);
+    public void start(String songId, SocketCallbackListener listener) {
+        helper.startRecord(songId, listener);
     }
 
     public void stop(boolean stop) {

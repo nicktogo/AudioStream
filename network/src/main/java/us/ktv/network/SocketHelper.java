@@ -50,7 +50,7 @@ public class SocketHelper {
         }
     }
 
-    public void startRecord(final SocketCallbackListener listener) {
+    public void startRecord(String songId, final SocketCallbackListener listener) {
 
         final int bufferSize = AudioRecord.getMinBufferSize(
                 44100,
@@ -66,6 +66,12 @@ public class SocketHelper {
 
         recorder.startRecording();
         setIsRecording(true);
+
+        try {
+            socketOutput.writeUTF("PLAY@" + songId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         new Thread(new Runnable() {
             @Override

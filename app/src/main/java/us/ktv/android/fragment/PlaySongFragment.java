@@ -82,7 +82,7 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case "Play" :
-                presenter.start(new SocketCallbackListener() {
+                presenter.start(song.id, new SocketCallbackListener() {
                     @Override
                     public void onConnect(String roomId, String songList) {
                         getActivity().runOnUiThread(new Runnable() {
