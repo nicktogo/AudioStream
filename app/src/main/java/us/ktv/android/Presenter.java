@@ -27,8 +27,8 @@ public class Presenter {
         return helper.connect(ip, port, listener);
     }
 
-    public void start(String songId, SocketCallbackListener listener) {
-        helper.startRecord(songId, listener);
+    public void start(String songName, SocketCallbackListener listener) {
+        helper.startRecord(songName, listener);
     }
 
     public void stop(boolean stop) {
