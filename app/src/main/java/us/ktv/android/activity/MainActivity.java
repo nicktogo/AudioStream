@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
 
     private static final int REQUEST_ROOM_ID = 1;
 
+    private boolean forwardToSongListFragment = false;
+    private String roomId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +49,24 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
     }
 
     @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (forwardToSongListFragment) {
+            SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, roomId);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+            forwardToSongListFragment = false;
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ROOM_ID) {
             if (resultCode == RESULT_OK) {
-                String roomId = data.getStringExtra(AddRoomActivity.ROOM_ID);
-                SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, roomId);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                roomId = data.getStringExtra(AddRoomActivity.ROOM_ID);
+                forwardToSongListFragment = true;
             } else if (resultCode == RESULT_FIRST_USER){
                 Toast.makeText(MainActivity.this, "Connect failed, please check your network", Toast.LENGTH_SHORT).show();
             }
