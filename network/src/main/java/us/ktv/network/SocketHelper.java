@@ -22,31 +22,36 @@ public class SocketHelper {
 
     private boolean isRecording;
 
+    /**
+     *  connect operation should not be performed from another thread,
+     *  this method already invoked from a background thread,
+     *  shot new thread may cause the origin background thread finished earlier than the new one,
+     *  hence cause unexpected result.
+     * @param ip
+     * @param port
+     * @param listener
+     * @return
+     */
     public boolean connect(final String ip, final int port, final SocketCallbackListener listener) {
         if (socket == null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        socket = new Socket(ip, port);
-                        socketOutput = new DataOutputStream(socket.getOutputStream());
-                        socketInput = new DataInputStream(socket.getInputStream());
-                        //TODO
-                        //send get song list request and receive json
-                        socketOutput.writeUTF("GET@SONGLIST");
-                        String songList;
-                        while (true) {
-                            if (!((songList = socketInput.readUTF()) == null)) {
-                                listener.onConnect(ip + ":" + port, songList);
-                                isConnected = true;
-                                break;
-                            }
-                        }
-                    } catch (Exception e) {
-                        listener.onError(e);
+            try {
+                socket = new Socket(ip, port);
+                socketOutput = new DataOutputStream(socket.getOutputStream());
+                socketInput = new DataInputStream(socket.getInputStream());
+                //TODO
+                //send get song list request and receive json
+                socketOutput.writeUTF("GET@SONGLIST");
+                String songList;
+                while (true) {
+                    if (!((songList = socketInput.readUTF()) == null)) {
+                        listener.onConnect(ip + ":" + port, songList);
+                        isConnected = true;
+                        break;
                     }
                 }
-            }).start();
+            } catch (Exception e) {
+                listener.onError(e);
+            }
         }
         return isConnected;
     }
