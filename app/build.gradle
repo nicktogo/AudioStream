@@ -27,10 +27,6 @@ buildscript {
     repositories {
         jcenter()
     }
-
-    dependencies {
-        classpath parent.ext.libraries.dataBinder
-    }
 }
 
 dependencies {
