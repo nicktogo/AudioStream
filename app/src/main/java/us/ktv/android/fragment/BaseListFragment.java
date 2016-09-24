@@ -11,12 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+
 import java.util.List;
 
+import us.ktv.android.R;
 import us.ktv.android.utils.databinding.OnItemClickListener;
 
 
-public abstract class BaseListFragment<T> extends Fragment implements OnItemClickListener<T> {
+public abstract class BaseListFragment<T>
+        extends Fragment
+        implements OnItemClickListener<T>, OnRefreshListener, OnLoadMoreListener {
 
     protected OnFragmentInteractionListener mListener;
 
@@ -28,6 +35,8 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
 
     protected List<T> list;
     protected int itemLayoutId;
+
+    protected SwipeToLoadLayout swipeToLoadLayout;
 
     public BaseListFragment() {
         // Required empty public constructor
@@ -43,7 +52,11 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(getLayoutId(), container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(android.R.id.list);
+        swipeToLoadLayout = (SwipeToLoadLayout) rootView.findViewById(R.id.swipeToLoadLayout);
+        swipeToLoadLayout.setOnRefreshListener(this);
+        swipeToLoadLayout.setOnLoadMoreListener(this);
+        // delegate find RecyclerView to subclass
+        // recyclerView = (RecyclerView) rootView.findViewById(android.R.id.list);
         return rootView;
     }
 
@@ -88,6 +101,8 @@ public abstract class BaseListFragment<T> extends Fragment implements OnItemClic
         super.onDetach();
         mListener = null;
     }
+
+    protected abstract void autoRefresh();
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Object o, View view);

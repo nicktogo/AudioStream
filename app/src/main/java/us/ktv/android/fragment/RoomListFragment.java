@@ -1,8 +1,10 @@
 package us.ktv.android.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import us.ktv.android.BR;
@@ -37,6 +39,13 @@ public class RoomListFragment extends BaseListFragment<Room> {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        recyclerView = (RecyclerView) rootView.findViewById(android.R.id.list);
+        return rootView;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RoomHelper helper = RoomHelper.getInstance(MicApplication.getInstance());
@@ -63,8 +72,23 @@ public class RoomListFragment extends BaseListFragment<Room> {
     }
 
     @Override
+    protected void autoRefresh() {
+
+    }
+
+    @Override
     public void onClick(Room room, View view) {
         //TODO SocketHelper connect!
         mListener.onFragmentInteraction(room, view);
+    }
+
+    @Override
+    public void onLoadMore() {
+
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 }

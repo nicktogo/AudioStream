@@ -44,7 +44,7 @@ public class SongListFragment extends BaseListFragment<Song> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(getLayoutId(), container, false);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.swipe_target);
         return rootView;
     }
@@ -56,6 +56,7 @@ public class SongListFragment extends BaseListFragment<Song> {
         list = helper.queryListByRoomId(roomId);
         updateAdapter();
         //refresh();
+        autoRefresh();
     }
 
     // TODO, perform AsyncTask to assist pullToRefresh
@@ -82,7 +83,37 @@ public class SongListFragment extends BaseListFragment<Song> {
     }
 
     @Override
+    protected void autoRefresh() {
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
     public void onClick(Song song, View view) {
         mListener.onFragmentInteraction(song, view);
+    }
+
+    @Override
+    public void onLoadMore() {
+        swipeToLoadLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setLoadingMore(false);
+            }
+        }, 2000);
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeToLoadLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(false);
+            }
+        }, 2000);
     }
 }
