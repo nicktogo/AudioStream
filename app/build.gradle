@@ -46,6 +46,7 @@ dependencies {
 
     compile parent.libraries.butterknife
     compile parent.libraries.swipeToLoadLayout
+    compile parent.libraries.materialloadingprogressbar
 
 
     compile project(':database')

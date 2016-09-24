@@ -28,7 +28,8 @@ ext.libraries = [
         drawee            : 'com.facebook.fresco:drawee:0.5.0',
         dataBinder        : 'com.android.databinding:dataBinder:1.0-rc1',
         butterknife       : 'com.jakewharton:butterknife:5.1.2',
-        swipeToLoadLayout : 'com.github.Aspsine:SwipeToLoadLayout:1.0.3'
+        swipeToLoadLayout : 'com.github.Aspsine:SwipeToLoadLayout:1.0.3',
+        materialloadingprogressbar : 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
 ]
 
 task clean(type: Delete) {

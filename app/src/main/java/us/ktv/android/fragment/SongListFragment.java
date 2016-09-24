@@ -1,7 +1,10 @@
 package us.ktv.android.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import us.ktv.android.BR;
 import us.ktv.android.R;
@@ -40,14 +43,22 @@ public class SongListFragment extends BaseListFragment<Song> {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(getLayoutId(), container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.swipe_target);
+        return rootView;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
         list = helper.queryListByRoomId(roomId);
         updateAdapter();
-        refresh();
+        //refresh();
     }
 
+    // TODO, perform AsyncTask to assist pullToRefresh
     protected void refresh() {
         while (true) {
             SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
