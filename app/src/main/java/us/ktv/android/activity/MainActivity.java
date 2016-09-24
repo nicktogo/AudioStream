@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                 roomId = data.getStringExtra(AddRoomActivity.ROOM_ID);
                 forwardToSongListFragment = true;
             } else if (resultCode == RESULT_FIRST_USER){
-                Toast.makeText(MainActivity.this, "Connect failed, please check your network", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "无法连接到房间，请检查网络。", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -7,6 +7,7 @@ import android.media.MediaRecorder;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -35,7 +36,8 @@ public class SocketHelper {
     public boolean connect(final String ip, final int port, final SocketCallbackListener listener) {
         if (socket == null) {
             try {
-                socket = new Socket(ip, port);
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(ip, port), 5000);
                 socketOutput = new DataOutputStream(socket.getOutputStream());
                 socketInput = new DataInputStream(socket.getInputStream());
                 //TODO
@@ -51,6 +53,7 @@ public class SocketHelper {
                 }
             } catch (Exception e) {
                 listener.onError(e);
+                return isConnected;
             }
         }
         return isConnected;

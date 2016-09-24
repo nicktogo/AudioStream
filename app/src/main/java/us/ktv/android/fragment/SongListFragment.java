@@ -1,17 +1,28 @@
 package us.ktv.android.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 import us.ktv.android.BR;
+import us.ktv.android.Presenter;
 import us.ktv.android.R;
 import us.ktv.android.activity.AddRoomActivity;
 import us.ktv.android.utils.MicApplication;
+import us.ktv.database.datamodel.Room;
+import us.ktv.database.datamodel.RoomHelper;
 import us.ktv.database.datamodel.Song;
 import us.ktv.database.datamodel.SongHelper;
+import us.ktv.database.utils.GsonUtils;
+import us.ktv.network.SocketCallbackListener;
 
 /**
  * Created by nick on 15-10-6.
@@ -84,12 +95,59 @@ public class SongListFragment extends BaseListFragment<Song> {
 
     @Override
     protected void autoRefresh() {
-        swipeToLoadLayout.post(new Runnable() {
+
+        // Connect to client and update song list
+        new AsyncTask<String, Void, Boolean>() {
+
             @Override
-            public void run() {
-                swipeToLoadLayout.setRefreshing(true);
+            protected void onPreExecute() {
+                swipeToLoadLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeToLoadLayout.setRefreshing(true);
+                    }
+                });
             }
-        });
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+                String roomId = params[0];
+                String ip = roomId.split(":")[0];
+                int port = Integer.parseInt(roomId.split(":")[1]);
+                boolean isConnected = Presenter.getPresenter().connect(ip, port, new SocketCallbackListener() {
+                    @Override
+                    public void onConnect(String roomId, String songList) {
+                        List<Song> list = GsonUtils.JsonToObject(songList, new TypeToken<List<Song>>() {
+                        }.getType());
+                        SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
+                        helper.insertList(roomId, list);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                return isConnected;
+            }
+
+            @Override
+            protected void onPostExecute(final Boolean isConnected) {
+                swipeToLoadLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeToLoadLayout.setRefreshing(false);
+                        if (!isConnected) {
+                            Toast.makeText(
+                                    MicApplication.getInstance(),
+                                    "无法连接到房间，请检查网络。",
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                });
+            }
+        }.execute(roomId);
     }
 
     @Override
