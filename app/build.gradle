@@ -45,6 +45,8 @@ dependencies {
     compile parent.libraries.drawee
 
     compile parent.libraries.butterknife
+    compile parent.libraries.swipeToLoadLayout
+
 
     compile project(':database')
     compile project(':network')
