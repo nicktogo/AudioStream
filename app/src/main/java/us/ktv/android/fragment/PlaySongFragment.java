@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import us.ktv.android.BR;
 import us.ktv.android.Presenter;
@@ -63,6 +63,8 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        TextView toolbarTitle = (TextView) view.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(song.name);
     }
 
     @Override

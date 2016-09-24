@@ -127,8 +127,10 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                 fragment.setSharedElementReturnTransition(new SongTransition());
 
                 SimpleDraweeView cover = ButterKnife.findById(view, R.id.cover);
+                TextView songName = ButterKnife.findById(view, R.id.name);
 
                 getSupportFragmentManager().beginTransaction()
+                        .addSharedElement(songName, getString(R.string.toolbar_title_transition_name))
                         .addSharedElement(cover, getString(R.string.cover_common_name))
                         .replace(R.id.container, fragment)
                         .addToBackStack(null)

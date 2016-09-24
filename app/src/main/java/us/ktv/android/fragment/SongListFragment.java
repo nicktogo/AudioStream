@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import us.ktv.android.BR;
@@ -167,6 +169,8 @@ public class SongListFragment extends BaseListFragment<Song> {
             setExitTransition(new Fade());
             SimpleDraweeView cover = (SimpleDraweeView) view.findViewById(R.id.cover);
             ViewCompat.setTransitionName(cover, song.id);
+            TextView songName = (TextView) view.findViewById(R.id.name);
+            ViewCompat.setTransitionName(songName, song.id + "_" +song.name);
         }
         mListener.onFragmentInteraction(song, view);
     }
