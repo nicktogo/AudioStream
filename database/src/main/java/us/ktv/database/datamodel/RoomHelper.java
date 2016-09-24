@@ -61,7 +61,7 @@ public class RoomHelper extends DatamodelHelper<Room> {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RoomColumn.ID, room.id);
         contentValues.put(RoomColumn.NAME, room.name);
-        contentValues.put(RoomColumn.ADD_TIME, new Date().toString());
+        contentValues.put(RoomColumn.ADD_TIME, room.addTime);
         return sqLiteDatabase.insert(RoomColumn.TABLE_NAME, null, contentValues) != -1;
     }
 }
