@@ -3,6 +3,7 @@ package us.ktv.android.fragment;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
@@ -158,6 +160,8 @@ public class SongListFragment extends BaseListFragment<Song> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setSharedElementReturnTransition(new SongTransition());
             setExitTransition(new Fade());
+            SimpleDraweeView cover = (SimpleDraweeView) view.findViewById(R.id.cover);
+            ViewCompat.setTransitionName(cover, song.id);
         }
         mListener.onFragmentInteraction(song, view);
     }

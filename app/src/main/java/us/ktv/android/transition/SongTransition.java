@@ -34,5 +34,6 @@ public class SongTransition extends TransitionSet {
         setOrdering(ORDERING_TOGETHER);
         addTransition(new ChangeBounds()).
                 addTransition(new ChangeTransform());
+        setDuration(500);
     }
 }

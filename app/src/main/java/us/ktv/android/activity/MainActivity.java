@@ -5,14 +5,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                 fragment.setSharedElementReturnTransition(new SongTransition());
 
                 SimpleDraweeView cover = ButterKnife.findById(view, R.id.cover);
-                cover.setTransitionName(getString(R.string.cover_common_name));
 
                 getSupportFragmentManager().beginTransaction()
                         .addSharedElement(cover, getString(R.string.cover_common_name))
