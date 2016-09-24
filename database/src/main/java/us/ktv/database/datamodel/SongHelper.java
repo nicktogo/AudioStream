@@ -81,6 +81,7 @@ public class SongHelper extends DatamodelHelper<Song> {
 
     public void insertList(String roomId, List<Song> list) {
         if (list != null) {
+            purgeSongList(roomId);
             int id = 1;
             for (Song song : list) {
                 song.id = String.valueOf(id++);
@@ -89,6 +90,10 @@ public class SongHelper extends DatamodelHelper<Song> {
             }
         }
         isUpdated = true;
+    }
+
+    private void purgeSongList(String roomId) {
+        sqLiteDatabase.delete(SongColumn.TABLE_NAME, SongColumn.ROOM_ID + " = ?", new String[] {roomId});
     }
 
 
