@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         fragmentManager.executePendingTransactions();
+        setTitle(R.string.room_ui);
     }
 
     @Override
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                     .replace(R.id.container, fragment)
                     .addToBackStack(null)
                     .commit();
+            setTitle(R.string.song_ui);
             forwardToSongListFragment = false;
         }
     }
@@ -104,13 +106,14 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                     .replace(R.id.container, fragment)
                     .addToBackStack(null)
                     .commit();
+            setTitle(R.string.song_ui);
         } else if (o instanceof Song) {
             Song song = (Song) o;
             PlaySongFragment fragment = PlaySongFragment.newInstance(song.id);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Slide slideTransaction = new Slide(Gravity.LEFT);
-                slideTransaction.setDuration(100);
+                slideTransaction.setDuration(500);
                 fragment.setEnterTransition(slideTransaction);
 
                 Transition changeBounds = TransitionInflater.from(this).inflateTransition(R.transition.change_bounds);
@@ -129,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                         .addToBackStack(null)
                         .commit();
             }
+            setTitle(song.name);
         } else if (view instanceof FloatingActionButton) {
             Intent intent = new Intent(this, AddRoomActivity.class);
             startActivityForResult(intent, REQUEST_ROOM_ID);

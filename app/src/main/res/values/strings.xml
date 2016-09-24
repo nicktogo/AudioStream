@@ -2,6 +2,9 @@
     <string name="app_name">HappyMic</string>
     <string name="action_settings">Settings</string>
 
+    <string name="room_ui">房间列表</string>
+    <string name="song_ui">歌曲列表</string>
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="play">Play</string>
     <string name="stop">Stop</string>
