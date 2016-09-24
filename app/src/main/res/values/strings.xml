@@ -25,4 +25,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Toolbar -->
+    <string name="toolbar_title">Toolbar Title</string>
+    <string name="toolbar_title_transition_name">toolbar_title_transition_name</string>
 </resources>
