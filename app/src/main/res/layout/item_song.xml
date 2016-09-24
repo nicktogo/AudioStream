@@ -31,23 +31,30 @@
             android:paddingTop="@dimen/list_item_top_bottom_margin"
             android:orientation="horizontal">
 
-            <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
-                fresco:placeholderImage="@drawable/default_avatar"
-                fresco:placeholderImageScaleType="fitCenter"
-                fresco:retryImage="@drawable/default_avatar"
-                fresco:retryImageScaleType="centerCrop"
-                fresco:roundAsCircle="true"
-                app:imageUrl="@{song.coverUrl}"
-                android:id="@+id/cover"
-                android:layout_width="@dimen/image_view_width"
-                android:layout_height="@dimen/image_view_height"
-                android:layout_marginEnd="@dimen/list_item_left_right_margin"
-                android:transitionName="@string/cover_common_name" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                    fresco:placeholderImage="@drawable/default_avatar"
+                    fresco:placeholderImageScaleType="fitCenter"
+                    fresco:retryImage="@drawable/default_avatar"
+                    fresco:retryImageScaleType="centerCrop"
+                    fresco:roundAsCircle="true"
+                    app:imageUrl="@{song.coverUrl}"
+                    android:id="@+id/cover"
+                    android:layout_width="@dimen/image_view_width"
+                    android:layout_height="@dimen/image_view_height"
+                    android:transitionName="@string/cover_common_name" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center_vertical|start">
 
                 <TextView
@@ -55,6 +62,7 @@
                     style="@style/mobile_list_item_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_item_margin"
                     android:text="@{song.name}"
                     android:textSize="@dimen/font_size_primary" />
 
@@ -64,9 +72,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_below="@id/name"
-                    android:maxLines="3"
+                    android:layout_margin="@dimen/text_item_margin"
+                    android:maxLines="1"
                     android:textSize="@dimen/font_size_small"
-                    android:singleLine="true"
                     android:text="@{song.singer}" />
 
             </RelativeLayout>

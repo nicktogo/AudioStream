@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="image_view_width">48dp</dimen>
-    <dimen name="image_view_height">48dp</dimen>
+    <dimen name="image_view_width">72dp</dimen>
+    <dimen name="image_view_height">72dp</dimen>
 
     <dimen name="image_view_play_width">240dp</dimen>
     <dimen name="image_view_play_height">240dp</dimen>
@@ -15,11 +15,12 @@
     <dimen name="list_item_left_right_margin">8dp</dimen>
 
     <dimen name="list_item_margin">4dp</dimen>
+    <dimen name="text_item_margin">2dp</dimen>
 
     <dimen name="btn_flat_corner_radius">1dp</dimen>
 
-    <dimen name="font_size_small">14sp</dimen>
-    <dimen name="font_size_primary">16sp</dimen>
+    <dimen name="font_size_small">16sp</dimen>
+    <dimen name="font_size_primary">24sp</dimen>
 
     <!-- google -->
     <dimen name="refresh_header_height_google">100dp</dimen>

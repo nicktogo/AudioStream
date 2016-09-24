@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 24
+    buildToolsVersion "23.0.3"
 
     dataBinding {
         enabled = true
@@ -10,8 +10,9 @@ android {
 
     defaultConfig {
         applicationId "us.ktv.android"
-        minSdkVersion 17
-        targetSdkVersion 23
+        testApplicationId "us.ktv.android.test"
+        minSdkVersion 21
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
