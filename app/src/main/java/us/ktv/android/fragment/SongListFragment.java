@@ -9,6 +9,7 @@ import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -68,8 +69,12 @@ public class SongListFragment extends BaseListFragment<Song> {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
-        list = helper.queryListByRoomId(roomId);
+        SongHelper songHelper = SongHelper.getInstance(MicApplication.getInstance());
+        list = songHelper.queryListByRoomId(roomId);
+        RoomHelper roomHelper = RoomHelper.getInstance(MicApplication.getInstance());
+        Room room = roomHelper.queryById(roomId);
+        TextView toolBarTitle = (TextView) view.findViewById(R.id.toolbar_title);
+        toolBarTitle.setText(room.name);
         updateAdapter();
         //refresh();
         autoRefresh();

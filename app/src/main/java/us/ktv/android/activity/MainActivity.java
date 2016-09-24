@@ -11,6 +11,7 @@ import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -37,14 +38,14 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         RoomListFragment fragment = RoomListFragment.newInstance(R.layout.item_room);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         fragmentManager.executePendingTransactions();
-        setTitle(R.string.room_ui);
+//        getSupportActionBar().setTitle(R.string.room_ui);
     }
 
     @Override
@@ -100,11 +101,22 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
         if (o instanceof Room) {
             Room room = (Room) o;
             SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, room.id);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-            setTitle(R.string.song_ui);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fragment.setSharedElementEnterTransition(new SongTransition());
+                fragment.setEnterTransition(new Fade());
+                fragment.setSharedElementReturnTransition(new SongTransition());
+                TextView roomName = (TextView) view.findViewById(R.id.name);
+                getSupportFragmentManager().beginTransaction()
+                        .addSharedElement(roomName, getString(R.string.toolbar_title_transition_name))
+                        .replace(R.id.container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
         } else if (o instanceof Song) {
             Song song = (Song) o;
             PlaySongFragment fragment = PlaySongFragment.newInstance(song.id);

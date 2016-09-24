@@ -3,15 +3,11 @@ package us.ktv.android.test;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import com.google.common.reflect.TypeToken;
-
-import java.util.List;
-
 import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.RoomHelper;
-import us.ktv.database.utils.GsonUtils;
 import us.ktv.database.datamodel.Song;
 import us.ktv.database.datamodel.SongHelper;
+import us.ktv.database.utils.GsonUtils;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -106,6 +102,11 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         Room room = GsonUtils.JsonToObject(TEXT_DATA_ROOM_JSON, Room.class);
         RoomHelper helper = RoomHelper.getInstance(mContext);
         assertEquals(true, helper.insert(room));
+        Room room1 = helper.queryById(room.id);
+        assertNotNull(room1);
+        assertEquals(room.id, room1.id);
+        assertEquals(room.name, room1.name);
+        assertEquals(room.addTime, room1.addTime);
     }
 
 }
