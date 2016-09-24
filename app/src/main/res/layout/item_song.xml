@@ -46,8 +46,7 @@
                     app:imageUrl="@{song.coverUrl}"
                     android:id="@+id/cover"
                     android:layout_width="@dimen/image_view_width"
-                    android:layout_height="@dimen/image_view_height"
-                    android:transitionName="@string/cover_common_name" />
+                    android:layout_height="@dimen/image_view_height"/>
 
             </LinearLayout>
 

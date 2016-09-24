@@ -1,8 +1,10 @@
 package us.ktv.android.fragment;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import us.ktv.android.BR;
 import us.ktv.android.Presenter;
 import us.ktv.android.R;
 import us.ktv.android.activity.AddRoomActivity;
+import us.ktv.android.transition.SongTransition;
 import us.ktv.android.utils.MicApplication;
 import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.RoomHelper;
@@ -152,6 +155,10 @@ public class SongListFragment extends BaseListFragment<Song> {
 
     @Override
     public void onClick(Song song, View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setSharedElementReturnTransition(new SongTransition());
+            setExitTransition(new Fade());
+        }
         mListener.onFragmentInteraction(song, view);
     }
 

@@ -5,8 +5,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -24,6 +26,7 @@ import us.ktv.android.fragment.BaseListFragment;
 import us.ktv.android.fragment.PlaySongFragment;
 import us.ktv.android.fragment.RoomListFragment;
 import us.ktv.android.fragment.SongListFragment;
+import us.ktv.android.transition.SongTransition;
 import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.Song;
 
@@ -112,18 +115,16 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
             PlaySongFragment fragment = PlaySongFragment.newInstance(song.id);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Slide slideTransaction = new Slide(Gravity.LEFT);
-                slideTransaction.setDuration(500);
-                fragment.setEnterTransition(slideTransaction);
-
-                Transition changeBounds = TransitionInflater.from(this).inflateTransition(R.transition.change_bounds);
-                fragment.setSharedElementEnterTransition(changeBounds);
+                fragment.setSharedElementEnterTransition(new SongTransition());
+                fragment.setEnterTransition(new Fade());
+                fragment.setSharedElementReturnTransition(new SongTransition());
 
                 SimpleDraweeView cover = ButterKnife.findById(view, R.id.cover);
+                cover.setTransitionName(getString(R.string.cover_common_name));
 
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fragment)
                         .addSharedElement(cover, getString(R.string.cover_common_name))
+                        .replace(R.id.container, fragment)
                         .addToBackStack(null)
                         .commit();
             } else {
