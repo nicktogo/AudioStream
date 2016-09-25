@@ -58,7 +58,7 @@ public class SocketHelper {
         }
         return isConnected;
     }
-
+    // TODO move to service with thread?
     public void startRecord(String songName, final SocketCallbackListener listener) {
 
         final int bufferSize = AudioRecord.getMinBufferSize(
@@ -73,14 +73,21 @@ public class SocketHelper {
                 AudioFormat.ENCODING_PCM_16BIT,
                 bufferSize);
 
-        recorder.startRecording();
-        setIsRecording(true);
-
+        // TODO handle exception properly
         try {
             socketOutput.writeUTF("PLAY@" + songName);
         } catch (IOException e) {
             e.printStackTrace();
+            listener.onError(new NetworkException("无法播放，请检查网络"));
+            return;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            listener.onError(new NetworkException("SocketOutput 未被初始化，没有连接到房间。"));
+            return;
         }
+
+        recorder.startRecording();
+        setIsRecording(true);
 
         new Thread(new Runnable() {
             @Override
@@ -92,7 +99,10 @@ public class SocketHelper {
                     try {
                         socketOutput.write(audio, 0, audio.length);
                     } catch (IOException e) {
-                        listener.onError(e);
+                        e.printStackTrace();
+                        listener.onError(new NetworkException("无法推流，请检查网络"));
+                        recorder.stop();
+                        return;
                     }
                 }
                 recorder.stop();
@@ -100,7 +110,8 @@ public class SocketHelper {
                 try {
                     socketOutput.close();
                 } catch (IOException e) {
-                    listener.onError(e);
+                    e.printStackTrace();
+                    listener.onError(new NetworkException("推流关闭失败，请检查网络"));
                 }
             }
         }).start();

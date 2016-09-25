@@ -22,6 +22,7 @@ import us.ktv.android.BR;
 import us.ktv.android.Presenter;
 import us.ktv.android.R;
 import us.ktv.android.activity.AddRoomActivity;
+import us.ktv.android.activity.MainActivity;
 import us.ktv.android.transition.SongTransition;
 import us.ktv.android.utils.MicApplication;
 import us.ktv.database.datamodel.Room;
@@ -149,11 +150,7 @@ public class SongListFragment extends BaseListFragment<Song> {
                     public void run() {
                         swipeToLoadLayout.setRefreshing(false);
                         if (!isConnected) {
-                            Toast.makeText(
-                                    MicApplication.getInstance(),
-                                    "无法连接到房间，请检查网络。",
-                                    Toast.LENGTH_SHORT)
-                                    .show();
+                            ((MainActivity) getActivity()).showSnackbar("无法连接到房间，请检查网络。");
                         }
                     }
                 });

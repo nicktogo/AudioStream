@@ -4,6 +4,7 @@ package us.ktv.android.fragment;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,12 @@ import butterknife.InjectView;
 import us.ktv.android.BR;
 import us.ktv.android.Presenter;
 import us.ktv.android.R;
+import us.ktv.android.activity.MainActivity;
 import us.ktv.android.utils.MicApplication;
 import us.ktv.database.datamodel.Song;
 import us.ktv.database.datamodel.SongColumn;
 import us.ktv.database.datamodel.SongHelper;
+import us.ktv.network.NetworkException;
 import us.ktv.network.SocketCallbackListener;
 
 public class PlaySongFragment extends Fragment implements View.OnClickListener {
@@ -97,8 +100,15 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onError(Exception e) {
-                        Toast.makeText(MicApplication.getInstance(), "something got wrong, please check log", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                        if (e instanceof NetworkException) {
+                            final NetworkException ne = (NetworkException) e;
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((MainActivity) getActivity()).showSnackbar(ne.getMessage());
+                                }
+                            });
+                        }
                     }
                 });
                 break;

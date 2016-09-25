@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                 roomId = data.getStringExtra(AddRoomActivity.ROOM_ID);
                 forwardToSongListFragment = true;
             } else if (resultCode == RESULT_FIRST_USER){
-                Toast.makeText(MainActivity.this, "无法连接到房间，请检查网络。", Toast.LENGTH_SHORT).show();
+                showSnackbar("无法连接到房间，请检查网络。");
             }
         }
     }
@@ -146,5 +147,10 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
             Intent intent = new Intent(this, AddRoomActivity.class);
             startActivityForResult(intent, REQUEST_ROOM_ID);
         }
+    }
+
+    public void showSnackbar(String msg) {
+        View coordinatorLayout = this.findViewById(R.id.coordinator_layout);
+        Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_SHORT).show();
     }
 }
