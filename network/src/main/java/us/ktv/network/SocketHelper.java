@@ -23,6 +23,8 @@ public class SocketHelper {
 
     private boolean isRecording;
 
+    private boolean isPlaying;
+
     /**
      *  connect operation should not be performed from another thread,
      *  this method already invoked from a background thread,
@@ -53,12 +55,12 @@ public class SocketHelper {
                 }
             } catch (Exception e) {
                 listener.onError(e);
-                return isConnected;
+                return isConnected = false;
             }
         }
         return isConnected;
     }
-    // TODO move to service with thread?
+
     public void startRecord(String songName, final SocketCallbackListener listener) {
 
         final int bufferSize = AudioRecord.getMinBufferSize(
@@ -73,7 +75,6 @@ public class SocketHelper {
                 AudioFormat.ENCODING_PCM_16BIT,
                 bufferSize);
 
-        // TODO handle exception properly
         try {
             socketOutput.writeUTF("PLAY@" + songName);
         } catch (IOException e) {
@@ -103,18 +104,40 @@ public class SocketHelper {
                         listener.onError(new NetworkException("无法推流，请检查网络"));
                         recorder.stop();
                         return;
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                        listener.onError(new NetworkException("Socket 未被初始化，没有连接到房间。"));
                     }
                 }
                 recorder.stop();
                 audio = null;
                 try {
-                    socketOutput.close();
+                    socketOutput.flush();
+                    // close the socketOutput will result the app cannot record and stream to server later
+                    // socketOutput.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    listener.onError(new NetworkException("推流关闭失败，请检查网络"));
+                    listener.onError(new NetworkException("flush 失败，请检查网络"));
                 }
             }
         }).start();
+    }
+
+    public boolean startPlay(String songName, SocketCallbackListener listener) {
+        try {
+            socketOutput.writeUTF("PLAY@" + songName);
+            // 验证是否播放 TODO 后端修改
+            setPlaying(socketInput.readBoolean());
+            return isPlaying();
+        } catch (IOException e) {
+            e.printStackTrace();
+            listener.onError(new NetworkException("无法播放，请检查网络"));
+            return isPlaying();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            listener.onError(new NetworkException("Socket 未被初始化，没有连接到房间。"));
+            return isPlaying();
+        }
     }
 
     public boolean isRecording() {
@@ -125,12 +148,31 @@ public class SocketHelper {
         this.isRecording = isRecording;
     }
 
-    public void stop() {
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
+    }
+
+    public void stopRecording() {
         setIsRecording(false);
+
+    }
+
+    public void stopPlaying(SocketCallbackListener listener) {
+        // setPlaying(false);
         try {
             socketOutput.writeUTF("STOP");
+            // 验证是否停止 TODO 后端修改
+            setPlaying(socketInput.readBoolean());
         } catch (IOException e) {
             e.printStackTrace();
+            listener.onError(new NetworkException("停止播放出错，请检查网络。"));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            listener.onError(new NetworkException("Socket 未被初始化，没有连接到房间。"));
         }
     }
 }

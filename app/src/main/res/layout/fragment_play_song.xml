@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -46,11 +47,22 @@
                     android:layout_height="@dimen/image_view_play_height"
                     android:transitionName="@string/cover_common_name" />
 
-                <Button
+                <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/control"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/play"/>
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    fancy:fb_defaultColor="#7ab800"
+                    fancy:fb_focusColor="#9bd823"
+                    fancy:fb_fontIconResource="&#xf04b;"
+                    fancy:fb_iconPosition="left"
+                    fancy:fb_radius="30dp"
+                    fancy:fb_text="@string/play"
+                    fancy:fb_textColor="#FFFFFF" />
 
             </LinearLayout>
 

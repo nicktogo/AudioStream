@@ -27,12 +27,20 @@ public class Presenter {
         return helper.connect(ip, port, listener);
     }
 
-    public void start(String songName, SocketCallbackListener listener) {
+    public void startRecord(String songName, SocketCallbackListener listener) {
         helper.startRecord(songName, listener);
     }
 
-    public void stop() {
-        helper.stop();
+    public void stopRecord() {
+        helper.stopRecording();
+    }
+
+    public void startPlay(String songName, SocketCallbackListener listener) {
+        helper.startPlay(songName, listener);
+    }
+
+    public void stopPlay(SocketCallbackListener listener) {
+        helper.stopPlaying(listener);
     }
 
 }

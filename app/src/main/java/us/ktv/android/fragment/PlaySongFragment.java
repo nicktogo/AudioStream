@@ -4,16 +4,14 @@ package us.ktv.android.fragment;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.InjectView;
+import mehdi.sakout.fancybuttons.FancyButton;
 import us.ktv.android.BR;
 import us.ktv.android.Presenter;
 import us.ktv.android.R;
@@ -30,7 +28,7 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
     private Song song = null;
 
     @InjectView(R.id.control)
-    Button controlButton;
+    FancyButton controlButton;
 
     public static PlaySongFragment newInstance(String songId) {
         PlaySongFragment fragment = new PlaySongFragment();
@@ -58,7 +56,7 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_play_song, container, false);
         binding.setVariable(BR.playingSong, song);
-        controlButton = (Button) binding.getRoot().findViewById(R.id.control);
+        controlButton = (FancyButton) binding.getRoot().findViewById(R.id.control);
         controlButton.setOnClickListener(this);
         return binding.getRoot();
     }
@@ -71,29 +69,31 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(final View v) {
+    public void onClick(View v) {
         Presenter presenter = Presenter.getPresenter();
-        String text = ((Button) v).getText().toString();
+        final FancyButton fancyButton = (FancyButton) v;
+        String text = fancyButton.getText().toString();
 
         switch (text) {
             case "Stop" :
-                presenter.stop();
+                presenter.stopRecord();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((Button) v).setText(getString(R.string.play));
+                        fancyButton.setText(getString(R.string.play));
                     }
                 });
                 break;
 
             case "Play" :
-                presenter.start(song.name, new SocketCallbackListener() {
+                presenter.startRecord(song.name, new SocketCallbackListener() {
                     @Override
                     public void onConnect(String roomId, String songList) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((Button) v).setText(getString(R.string.stop));
+                                fancyButton.setText(getString(R.string.stop));
+                                fancyButton.setIconResource("\uF04C");
                             }
                         });
                     }
