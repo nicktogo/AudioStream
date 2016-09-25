@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,9 +53,6 @@ public abstract class BaseListFragment<T>
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(getLayoutId(), container, false);
-        swipeToLoadLayout = (SwipeToLoadLayout) rootView.findViewById(R.id.swipeToLoadLayout);
-        swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
         // delegate find RecyclerView to subclass
         // recyclerView = (RecyclerView) rootView.findViewById(android.R.id.list);
         return rootView;
@@ -68,6 +66,19 @@ public abstract class BaseListFragment<T>
         if (recyclerView != null) {
             recyclerView.setLayoutManager(linearLayoutManager);
         }
+        swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+        swipeToLoadLayout.setOnRefreshListener(this);
+        swipeToLoadLayout.setOnLoadMoreListener(this);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
+                        swipeToLoadLayout.setLoadingMore(true);
+                    }
+                }
+            }
+        });
     }
 
     protected void updateAdapter() {
