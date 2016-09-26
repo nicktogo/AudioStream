@@ -39,6 +39,7 @@ public abstract class DatamodelHelper<T> {
         song.name = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.NAME));
         song.singer = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.SINGER));
         song.coverUrl = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.COVER_URL));
+        song.album = cursor.getString(cursor.getColumnIndexOrThrow(SongColumn.ALBUM));
         return song;
     }
 

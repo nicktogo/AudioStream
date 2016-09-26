@@ -85,16 +85,28 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         create();
         Song song = GsonUtils.JsonToObject(TEXT_DATA_SONG_JSON, Song.class);
         SongHelper helper = SongHelper.getInstance(mContext);
-        assertEquals(true, helper.insert(song));
-        for (int i = 2; i < 10; i++) {
+        String[] names = new String[] {
+                "日不落",
+                "双节棍",
+                "青花瓷",
+                "七里香",
+                "贝加尔湖畔",
+                "松花江上",
+                "友情岁月",
+                "Fight Song",
+                "岁月轻狂",
+                "Call Me Maybe",
+                "Yesterday Once More",
+                "夜空中最亮的星",
+                "呼啸而过",
+                "彩虹金刚",
+                "时光",
+        };
+        for (int i = 1; i < 16; i++) {
             song.id = String.valueOf(i);
+            song.name = names[i - 1];
             assertEquals(true, helper.insert(song));
         }
-//        List<Song> songList = GsonUtils.JsonToObject(TEXT_DATA_SONG_LIST_JSON, new TypeToken<List<Song>>(){}.getType());
-//        SongHelper helper = SongHelper.getInstance(mContext);
-//        helper.insertList("192.168.1.1:9090", songList);
-//        List<Song> songs = helper.queryListByRoomId("192.168.1.1:9090");
-//        assertEquals(6, songs.size());
     }
 
     public void testRoomHelper() {

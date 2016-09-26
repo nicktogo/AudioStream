@@ -10,4 +10,5 @@ public class SongColumn {
     public static final String NAME = "name";
     public static final String SINGER = "singer";
     public static final String COVER_URL = "cover_url";
+    public static final String ALBUM = "album";
 }

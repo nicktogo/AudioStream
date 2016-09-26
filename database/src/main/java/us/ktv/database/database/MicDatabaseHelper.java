@@ -24,6 +24,7 @@ public class MicDatabaseHelper extends SQLiteOpenHelper {
             SongColumn.ROOM_ID + " text, " +
             SongColumn.NAME + " text, " +
             SongColumn.SINGER + " text, " +
+            SongColumn.ALBUM + " text, " +
             SongColumn.COVER_URL + " text" +
             ");";
 
