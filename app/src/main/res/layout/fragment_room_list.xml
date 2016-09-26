@@ -24,7 +24,7 @@
             android:id="@id/swipe_refresh_header"
             layout="@layout/layout_google_hook_header" />
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@id/swipe_target"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -38,11 +38,12 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/fab_margin"
-                android:src="@android:drawable/ic_input_add" />
+                android:src="@drawable/ic_add_white_24dp" />
 
-        </FrameLayout>
+        </RelativeLayout>
 
         <include
             android:id="@id/swipe_load_more_footer"
