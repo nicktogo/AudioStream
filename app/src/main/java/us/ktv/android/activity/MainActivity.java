@@ -1,20 +1,23 @@
 package us.ktv.android.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -24,8 +27,8 @@ import us.ktv.android.fragment.BaseListFragment;
 import us.ktv.android.fragment.PlaySongFragment;
 import us.ktv.android.fragment.RoomFragment;
 import us.ktv.android.fragment.RoomListFragment;
-import us.ktv.android.fragment.SongListFragment;
 import us.ktv.android.transition.SongTransition;
+import us.ktv.android.utils.MicApplication;
 import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.Song;
 
@@ -41,6 +44,9 @@ public class MainActivity
     private boolean forwardToSongListFragment = false;
     private String roomId;
 
+    private static final int REQUEST_RECORD_AUDIO = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +54,74 @@ public class MainActivity
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
+        if (ActivityCompat.checkSelfPermission
+                (MicApplication.getInstance(), Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.d("MainActivity", "RECORD_AUDIO permission has NOT been granted. Requesting permission.");
+            // BEGIN_INCLUDE(camera_permission_request)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+                // Provide an additional rationale to the user if the permission was not granted
+                // and the user would benefit from additional context for the use of the permission.
+                // For example if the user has previously denied the permission.
+                Log.i("MainActivity",
+                        "Displaying record_audio permission rationale to provide additional context.");
+                View coordinatorLayout = this.findViewById(R.id.coordinator_layout);
+                final Snackbar snackbar = Snackbar.make(
+                        coordinatorLayout,
+                        R.string.permission_record_audio_rationale,
+                        Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction(R.string.ok, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.RECORD_AUDIO},
+                                        REQUEST_RECORD_AUDIO);
+                            }
+                        })
+                        .setAction(R.string.dismiss, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                snackbar.dismiss();
+                                MainActivity.this.finish();
+                            }
+                        });
+                snackbar.show();
+            } else {
+                // Record audio permission has not been granted yet. Request it directly.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                        REQUEST_RECORD_AUDIO);
+            }
+        }
+
         RoomListFragment fragment = RoomListFragment.newInstance(R.layout.item_room);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         fragmentManager.executePendingTransactions();
 //        getSupportActionBar().setTitle(R.string.room_ui);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_RECORD_AUDIO) {
+            // BEGIN_INCLUDE(permission_result)
+            // Received permission result for record_audio permission.
+            Log.i("MainActivity", "Received response for Record audio permission request.");
+            View coordinatorLayout = this.findViewById(R.id.coordinator_layout);
+            // Check if the only required permission has been granted
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Record audio permission has been granted, preview can be displayed
+                Log.i("MainActivity", "Record audio permission has now been granted.");
+                Snackbar.make(coordinatorLayout, R.string.permission_available_record_audio,
+                        Snackbar.LENGTH_SHORT).show();
+            } else {
+                Log.i("MainActivity", "Record audio permission was NOT granted.");
+                Snackbar.make(coordinatorLayout, R.string.permissions_not_granted,
+                        Snackbar.LENGTH_SHORT).show();
+
+            }
+            // END_INCLUDE(permission_result)
+        }
     }
 
     @Override

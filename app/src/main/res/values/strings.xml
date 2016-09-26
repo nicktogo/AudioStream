@@ -14,14 +14,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <integer name="anim_duration_long">1000</integer>
-    <string name="title_activity_add_room">Add room</string>
+    <string name="title_activity_add_room">添加房间</string>
 
     <!-- Strings related to login -->
     <string name="prompt_room_id">IP:PORT</string>
-    <string name="action_add">Add room</string>
+    <string name="action_add">添加</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_input">This input is invalid</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_input">输入无效!</string>
+    <string name="error_field_required">请输入...</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
@@ -34,4 +34,11 @@
     <!-- TabLayout -->
     <string name="all_song_tab">所有歌曲</string>
     <string name="user_song_tab">已点歌曲</string>
+
+    <!-- Permission rationale-->
+    <string name="ok">好的</string>
+    <string name="dismiss">不好</string>
+    <string name="permission_record_audio_rationale">打开麦克风需要录音权限，请允许。</string>
+    <string name="permission_available_record_audio">已经取得录音权限。</string>
+    <string name="permissions_not_granted">没有取得录音权限！</string>
 </resources>
