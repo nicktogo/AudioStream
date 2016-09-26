@@ -58,13 +58,39 @@ public class MainActivity
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
+//        if (forwardToSongListFragment) {
+//            SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, roomId);
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.container, fragment)
+//                    .addToBackStack(null)
+//                    .commit();
+//            setTitle(R.string.song_ui);
+//            forwardToSongListFragment = false;
+//        }
+//        RoomFragment fragment = RoomFragment.newInstance(roomId);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            fragment.setSharedElementEnterTransition(new SongTransition());
+//            fragment.setEnterTransition(new Fade());
+//            fragment.setSharedElementReturnTransition(new SongTransition());
+//            TextView roomName = (TextView) view.findViewById(R.id.name);
+//            getSupportFragmentManager().beginTransaction()
+//                    .addSharedElement(roomName, getString(R.string.toolbar_title_transition_name))
+//                    .replace(R.id.container, fragment)
+//                    .addToBackStack(null)
+//                    .commit();
+//        } else {
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.container, fragment)
+//                    .addToBackStack(null)
+//                    .commit();
+//        }
         if (forwardToSongListFragment) {
-            SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, roomId);
+            RoomFragment fragment = RoomFragment.newInstance(roomId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment)
                     .addToBackStack(null)
                     .commit();
-            setTitle(R.string.song_ui);
+//            setTitle(R.);
             forwardToSongListFragment = false;
         }
     }

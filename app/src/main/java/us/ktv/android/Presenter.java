@@ -1,5 +1,9 @@
 package us.ktv.android;
 
+import com.google.gson.internal.Streams;
+
+import us.ktv.database.datamodel.Room;
+import us.ktv.network.RecordSocketHelper;
 import us.ktv.network.SocketCallbackListener;
 import us.ktv.network.SocketHelper;
 
@@ -8,11 +12,13 @@ import us.ktv.network.SocketHelper;
  */
 public class Presenter {
     private SocketHelper helper;
+    private RecordSocketHelper recordSocketHelper;
 
     private static Presenter presenter;
 
     private Presenter() {
         helper = new SocketHelper();
+        recordSocketHelper = new RecordSocketHelper();
     }
 
     public synchronized static Presenter getPresenter() {
@@ -24,15 +30,17 @@ public class Presenter {
     }
 
     public boolean connect(String ip, int port, SocketCallbackListener listener) {
-        return helper.connect(ip, port, listener);
+        boolean isHelperConnected = helper.connect(ip, port, listener);
+        boolean isRecordSocketHelperConnected = recordSocketHelper.connect(ip, port + 1, listener);
+        return isHelperConnected && isRecordSocketHelperConnected;
     }
 
     public void startRecord(String songName, SocketCallbackListener listener) {
-        helper.startRecord(songName, listener);
+        recordSocketHelper.startRecord(listener);
     }
 
     public void stopRecord() {
-        helper.stopRecording();
+        recordSocketHelper.stopRecording();
     }
 
     public void startPlay(String songName, SocketCallbackListener listener) {
@@ -41,6 +49,14 @@ public class Presenter {
 
     public void stopPlay(SocketCallbackListener listener) {
         helper.stopPlaying(listener);
+    }
+
+    public void addSong(String songName, SocketCallbackListener listener) {
+        helper.addSong(songName, listener);
+    }
+
+    public boolean refresh(String roomId, SocketCallbackListener listener) {
+        return helper.refresh(roomId, listener);
     }
 
 }

@@ -8,15 +8,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import us.ktv.android.Presenter;
 import us.ktv.android.R;
+import us.ktv.android.activity.MainActivity;
 import us.ktv.android.utils.MicApplication;
 import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.RoomHelper;
+import us.ktv.network.NetworkException;
+import us.ktv.network.SocketCallbackListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,7 +73,7 @@ public class RoomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_room, container, false);
-        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.song_list_tab_layout);
+        final TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.song_list_tab_layout);
         final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.song_list_view_pager);
         viewPager.setAdapter(new PagerAdapter(getChildFragmentManager()));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -88,9 +95,60 @@ public class RoomFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setText(R.string.all_song_tab);
         tabLayout.getTabAt(1).setText(R.string.user_song_tab);
+
         Room room = RoomHelper.getInstance(MicApplication.getInstance()).queryById(roomId);
         TextView toolBarTitle = (TextView) rootView.findViewById(R.id.toolbar_title);
         toolBarTitle.setText(room.name);
+
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.room_toolbar_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+
+            boolean isStarted = false;
+
+            @Override
+            public boolean onMenuItemClick(final MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_record:
+                        if (!isStarted) {
+                            Presenter.getPresenter().startRecord(null, new SocketCallbackListener() {
+                                @Override
+                                public void onConnect(String roomId, String songList) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            item.setIcon(R.drawable.ic_mic_white_24dp);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    if (e instanceof NetworkException) {
+                                        final NetworkException ne = (NetworkException) e;
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ((MainActivity) getActivity()).showSnackbar(ne.getMessage());
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                            isStarted = true;
+                            Log.d("RoomFragment", "start");
+                        } else {
+                            Presenter.getPresenter().stopRecord();
+                            item.setIcon(R.drawable.ic_mic_none_white_24dp);
+                            isStarted = false;
+                            Log.d("RoomFragment", "stop");
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
+
         return rootView;
     }
 
@@ -145,9 +203,9 @@ public class RoomFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return SongListFragment.newInstance(R.layout.item_song, roomId);
+                    return SongListFragment.newInstance(R.layout.item_all_song, roomId, true);
                 case 1:
-                    return SongListFragment.newInstance(R.layout.item_song, roomId);
+                    return SongListFragment.newInstance(R.layout.item_song, roomId, false);
             }
             return null;
         }

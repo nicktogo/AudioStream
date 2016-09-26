@@ -75,80 +75,60 @@ public class SongHelper extends DatamodelHelper<Song> {
         songValues.put(SongColumn.ROOM_ID, song.roomId);
         songValues.put(SongColumn.NAME, song.name);
         switch (song.name) {
-            case "日不落":
-                song.singer = "蔡依林";
-                song.coverUrl = "http://star.kuwo.cn/star/starheads/180/18/57/2779975859.jpg";
-                song.album = "特务J";
+            case "一无所有":
+                song.singer = "崔健";
+                song.coverUrl = "http://image.cnwest.com/attachement/jpg/site1/20090209/001372d8a3140af9c53711.jpg";
+                song.album = "新长征路上的摇滚";
                 break;
-            case "双节棍":
-                song.singer = "周杰伦";
-                song.coverUrl = "http://img3.kuwo.cn/star/albumcover/240/73/57/3936595753.jpg";
-                song.album = "范特西";
-                break;
-            case "青花瓷":
-                song.singer = "周杰伦";
-                song.coverUrl = "http://img3.kuwo.cn/star/albumcover/240/16/26/1662595718.jpg";
-                song.album = "我很忙";
-                break;
-            case "七里香":
-                song.singer = "周杰伦";
-                song.coverUrl = "http://img4.kuwo.cn/star/albumcover/240/22/76/1300305679.jpg";
-                song.album = "七里香";
-                break;
-            case "贝加尔湖畔":
+            case "假如爱有天意":
                 song.singer = "李健";
-                song.coverUrl = "http://img2.kuwo.cn/star/albumcover/240/12/65/2189344037.jpg";
-                song.album = "我是歌手第三季 第四期";
+                song.coverUrl = "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3249849380,444900555&fm=58";
+                song.album = "我是歌手";
                 break;
-            case "松花江上":
-                song.singer = "军旅歌曲";
-                song.coverUrl = "http://img1.kuwo.cn/star/albumcover/240/46/59/1795729620.jpg";
-                song.album = "革命老歌";
+            case "单纯":
+                song.singer = "张惠妹";
+                song.coverUrl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3059212860,302126209&fm=58";
+                song.album = "我要快乐";
                 break;
-            case "友情岁月":
-                song.singer = "汪晨蕊";
-                song.coverUrl = "http://img3.kuwo.cn/star/albumcover/240/42/49/3045228253.jpg";
-                song.album = "中国新歌声 第十二期";
+            case "发现":
+                song.singer = "赵薇";
+                song.coverUrl = "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4113596581,2105788036&fm=58";
+                song.album = "双";
                 break;
-            case "Fight Song":
-                song.singer = "李佩玲";
-                song.coverUrl = "http://img3.kuwo.cn/star/albumcover/240/42/49/3045228253.jpg";
-                song.album = "中国新歌声 第十二期";
+            case "情深深雨蒙蒙":
+                song.singer = "赵薇";
+                song.coverUrl = "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1769896624,3408692146&fm=58";
+                song.album = "情深深雨蒙蒙";
                 break;
-            case "岁月轻狂":
-                song.singer = "张信哲";
-                song.coverUrl = "http://img4.kuwo.cn/star/albumcover/240/92/76/1392616598.jpg";
-                song.album = "歌 时代";
+            case "想你的夜":
+                song.singer = "关喆";
+                song.coverUrl = "http://y.gtimg.cn/music/photo_new/T002R300x300M000001msoYJ4PUYZ3.jpg";
+                song.album = "身边的故事";
                 break;
-            case "Call Me Maybe":
-                song.singer = "Carly Rae Jepsen";
-                song.coverUrl = "http://img3.kuwo.cn/star/albumcover/240/75/73/1724812713.jpg";
-                song.album = "Now That's What I Call Feel Good - Various Artists";
+            case "我的果汁分你一半":
+                song.singer = "花儿乐队";
+                song.coverUrl = "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1353497666,2886130277&fm=58";
+                song.album = "花天喜事";
                 break;
-            case "Yesterday Once More":
-                song.singer = "Carpenters";
-                song.coverUrl = "http://img4.kuwo.cn/star/albumcover/240/10/2/2859754071.jpg";
-                song.album = "Yesterday Once More: Greatest Hits 1969-1983";
+            case "我真的可以":
+                song.singer = "郑中基";
+                song.coverUrl = "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1359469010,2942329269&fm=58";
+                song.album = "我真的可以";
                 break;
-            case "夜空中最亮的星":
-                song.singer = "G.E.M.邓紫棋";
-                song.coverUrl = "http://img2.kuwo.cn/star/albumcover/240/96/40/1928244274.jpg";
-                song.album = "夜空中最亮的星";
+            case "艺界人生":
+                song.singer = "江蕙";
+                song.coverUrl = "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=803814676,2771015965&fm=58";
+                song.album = "江蕙世纪金选";
                 break;
-            case "呼啸而过":
-                song.singer = "陈翔";
-                song.coverUrl = "http://img2.kuwo.cn/star/albumcover/240/7/11/3145343873.jpg";
-                song.album = "呼啸而过";
+            case "过完冬季":
+                song.singer = "李玟";
+                song.coverUrl = "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1987935394,3307718210&fm=58";
+                song.album = "最完美影音典藏精选";
                 break;
-            case "彩虹金刚":
-                song.singer = "孙燕姿";
-                song.coverUrl = "http://img1.kuwo.cn/star/albumcover/240/70/68/2606671502.jpg";
-                song.album = "彩虹金刚";
-                break;
-            case "时光":
-                song.singer = "许巍";
-                song.coverUrl = "http://img4.kuwo.cn/star/albumcover/240/57/57/4110030229.jpg";
-                song.album = "今天 许巍 2002-2008生活作品集";
+            case "松花江":
+                song.singer = "李健";
+                song.coverUrl = "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4007465494,1840738027&fm=58";
+                song.album = "想念你";
                 break;
         }
         songValues.put(SongColumn.SINGER, song.singer);

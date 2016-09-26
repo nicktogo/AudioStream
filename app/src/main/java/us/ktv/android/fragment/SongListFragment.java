@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+import mehdi.sakout.fancybuttons.FancyButton;
 import us.ktv.android.BR;
 import us.ktv.android.Presenter;
 import us.ktv.android.R;
@@ -30,6 +31,7 @@ import us.ktv.database.datamodel.RoomHelper;
 import us.ktv.database.datamodel.Song;
 import us.ktv.database.datamodel.SongHelper;
 import us.ktv.database.utils.GsonUtils;
+import us.ktv.network.NetworkException;
 import us.ktv.network.SocketCallbackListener;
 
 /**
@@ -38,16 +40,20 @@ import us.ktv.network.SocketCallbackListener;
 public class SongListFragment extends BaseListFragment<Song> {
 
     private String roomId;
+    private boolean isAll;
+
+    public static String IS_ALL = "is_all";
 
     public SongListFragment() {
         super();
     }
 
-    public static SongListFragment newInstance(int itemLayoutId, String roomId) {
+    public static SongListFragment newInstance(int itemLayoutId, String roomId, boolean isAll) {
         SongListFragment fragment = new SongListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(BaseListFragment.ITEM_LAYOUT_ID, itemLayoutId);
         bundle.putString(AddRoomActivity.ROOM_ID, roomId);
+        bundle.putBoolean(IS_ALL, isAll);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -58,6 +64,7 @@ public class SongListFragment extends BaseListFragment<Song> {
         if (getArguments() != null) {
             itemLayoutId = getArguments().getInt(BaseListFragment.ITEM_LAYOUT_ID);
             roomId = getArguments().getString(AddRoomActivity.ROOM_ID);
+            isAll = getArguments().getBoolean(IS_ALL);
         }
     }
 
@@ -71,12 +78,20 @@ public class SongListFragment extends BaseListFragment<Song> {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SongHelper songHelper = SongHelper.getInstance(MicApplication.getInstance());
-        list = songHelper.queryListByRoomId(roomId);
-        RoomHelper roomHelper = RoomHelper.getInstance(MicApplication.getInstance());
-        updateAdapter();
+        getData(isAll);
         //refresh();
-        autoRefresh();
+        //autoRefresh();
+    }
+
+    protected void getData(boolean isAll) {
+        if (isAll) {
+            list = GsonUtils.JsonToObject(AllSongListFragment.ALL_SONGS, new TypeToken<List<Song>>() {
+            }.getType());
+        } else {
+            SongHelper songHelper = SongHelper.getInstance(MicApplication.getInstance());
+            list = songHelper.queryListByRoomId(roomId);
+        }
+        updateAdapter();
     }
 
     // TODO, perform AsyncTask to assist pullToRefresh
@@ -121,9 +136,7 @@ public class SongListFragment extends BaseListFragment<Song> {
             @Override
             protected Boolean doInBackground(String... params) {
                 String roomId = params[0];
-                String ip = roomId.split(":")[0];
-                int port = Integer.parseInt(roomId.split(":")[1]);
-                boolean isConnected = Presenter.getPresenter().connect(ip, port, new SocketCallbackListener() {
+                boolean isRefreshed = Presenter.getPresenter().refresh(getRoomId(), new SocketCallbackListener() {
                     @Override
                     public void onConnect(String roomId, String songList) {
                         List<Song> list = GsonUtils.JsonToObject(songList, new TypeToken<List<Song>>() {
@@ -134,20 +147,27 @@ public class SongListFragment extends BaseListFragment<Song> {
 
                     @Override
                     public void onError(Exception e) {
-                        e.printStackTrace();
+                        if (e instanceof NetworkException) {
+                            NetworkException ne = (NetworkException) e;
+                            ((MainActivity) getActivity()).showSnackbar(ne.getMessage());
+                        }
                     }
                 });
-                return isConnected;
+                return isRefreshed;
             }
 
             @Override
-            protected void onPostExecute(final Boolean isConnected) {
+            protected void onPostExecute(final Boolean isRefreshed) {
+                list = SongHelper.getInstance(MicApplication.getInstance()).queryListByRoomId(roomId);
+                updateAdapter();
                 swipeToLoadLayout.post(new Runnable() {
                     @Override
                     public void run() {
                         swipeToLoadLayout.setRefreshing(false);
-                        if (!isConnected) {
+                        if (!isRefreshed) {
                             ((MainActivity) getActivity()).showSnackbar("无法连接到房间，请检查网络。");
+                        } else {
+                            ((MainActivity) getActivity()).showSnackbar("列表已经更新。");
                         }
                     }
                 });
@@ -156,16 +176,35 @@ public class SongListFragment extends BaseListFragment<Song> {
     }
 
     @Override
-    public void onClick(Song song, View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementReturnTransition(new SongTransition());
-            setExitTransition(new Fade());
-            SimpleDraweeView cover = (SimpleDraweeView) view.findViewById(R.id.cover);
-            ViewCompat.setTransitionName(cover, song.id);
-            TextView songName = (TextView) view.findViewById(R.id.name);
-            ViewCompat.setTransitionName(songName, song.id + "_" +song.name);
+    public void onClick(final Song song, View view) {
+        if (isAll) {
+            Presenter.getPresenter().addSong(song.name, new SocketCallbackListener() {
+                @Override
+                public void onConnect(String roomId, String songList) {
+                    ((MainActivity) getActivity()).showSnackbar("歌曲：" + song.name + " 已经添加");
+                    song.roomId = getRoomId();
+                    SongHelper.getInstance(MicApplication.getInstance()).insert(song);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    if (e instanceof NetworkException) {
+                        NetworkException ne = (NetworkException) e;
+                        ((MainActivity) getActivity()).showSnackbar(ne.getMessage());
+                    }
+                }
+            });
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setSharedElementReturnTransition(new SongTransition());
+                setExitTransition(new Fade());
+                SimpleDraweeView cover = (SimpleDraweeView) view.findViewById(R.id.cover);
+                ViewCompat.setTransitionName(cover, song.id);
+                TextView songName = (TextView) view.findViewById(R.id.name);
+                ViewCompat.setTransitionName(songName, song.id + "_" +song.name);
+            }
+            mListener.onFragmentInteraction(song, view);
         }
-        mListener.onFragmentInteraction(song, view);
     }
 
     @Override
@@ -182,11 +221,61 @@ public class SongListFragment extends BaseListFragment<Song> {
     @Override
     public void onRefresh() {
         Log.d("SongListFragment", "Refresh");
-        swipeToLoadLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeToLoadLayout.setRefreshing(false);
-            }
-        }, 2000);
+//        swipeToLoadLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                swipeToLoadLayout.setRefreshing(true);
+//            }
+//        });
+//        if (!isAll) {
+//            list = SongHelper.getInstance(MicApplication.getInstance()).queryListByRoomId(getRoomId());
+//            updateAdapter();
+//        }
+//        swipeToLoadLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                swipeToLoadLayout.setRefreshing(false);
+//            }
+//        });
+//        swipeToLoadLayout.setRefreshing(true);
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                Presenter.getPresenter().refresh(getRoomId(), new SocketCallbackListener() {
+//                    @Override
+//                    public void onConnect(String roomId, String songList) {
+//                        List<Song> list = GsonUtils.JsonToObject(songList, new TypeToken<List<Song>>() {
+//                        }.getType());
+//                        SongHelper helper = SongHelper.getInstance(MicApplication.getInstance());
+//                        helper.insertList(roomId, list);
+//                        swipeToLoadLayout.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                swipeToLoadLayout.setRefreshing(false);
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onError(Exception e) {
+//                        if (e instanceof NetworkException) {
+//                            final NetworkException ne = (NetworkException) e;
+//                            getActivity().runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    ((MainActivity) getActivity()).showSnackbar(ne.getMessage());
+//                                    swipeToLoadLayout.setRefreshing(false);
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//            }
+//        }.start();
+        autoRefresh();
+    }
+
+    private String getRoomId() {
+        return this.roomId;
     }
 }

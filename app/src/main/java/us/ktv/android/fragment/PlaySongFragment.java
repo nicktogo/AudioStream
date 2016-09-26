@@ -76,17 +76,36 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
 
         switch (text) {
             case "Stop" :
-                presenter.stopRecord();
-                getActivity().runOnUiThread(new Runnable() {
+                presenter.stopPlay(new SocketCallbackListener() {
                     @Override
-                    public void run() {
-                        fancyButton.setText(getString(R.string.play));
+                    public void onConnect(String roomId, String songList) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                fancyButton.setText(getString(R.string.play));
+                                fancyButton.setIconResource("\uF04B");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        if (e instanceof NetworkException) {
+                            final NetworkException ne = (NetworkException) e;
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((MainActivity) getActivity()).showSnackbar(ne.getMessage());
+                                }
+                            });
+                        }
                     }
                 });
+                presenter.stopRecord();
                 break;
 
             case "Play" :
-                presenter.startRecord(song.name, new SocketCallbackListener() {
+                SocketCallbackListener listener = new SocketCallbackListener() {
                     @Override
                     public void onConnect(String roomId, String songList) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -110,7 +129,9 @@ public class PlaySongFragment extends Fragment implements View.OnClickListener {
                             });
                         }
                     }
-                });
+                };
+                presenter.startPlay(song.name, listener);
+                presenter.startRecord(song.name, listener);
                 break;
         }
 

@@ -29,6 +29,7 @@
     <!-- Toolbar -->
     <string name="toolbar_title">Toolbar Title</string>
     <string name="toolbar_title_transition_name">toolbar_title_transition_name</string>
+    <string name="start_record">开始录音</string>
 
     <!-- TabLayout -->
     <string name="all_song_tab">所有歌曲</string>
