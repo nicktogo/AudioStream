@@ -32,7 +32,6 @@ buildscript {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile parent.libraries.appcompat
     compile parent.libraries.design
     compile parent.libraries.recyclerview
@@ -49,4 +48,6 @@ dependencies {
 
     compile project(':database')
     compile project(':network')
+    compile 'com.android.support:support-v4:24.2.1'
+    testCompile 'junit:junit:4.12'
 }

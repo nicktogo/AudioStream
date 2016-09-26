@@ -5,14 +5,14 @@
     <string name="room_ui">房间列表</string>
     <string name="song_ui">歌曲列表</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="play">Play</string>
     <string name="stop">Stop</string>
     <string name="cover_common_name">cover</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    
+
     <integer name="anim_duration_long">1000</integer>
     <string name="title_activity_add_room">Add room</string>
 
@@ -29,4 +29,8 @@
     <!-- Toolbar -->
     <string name="toolbar_title">Toolbar Title</string>
     <string name="toolbar_title_transition_name">toolbar_title_transition_name</string>
+
+    <!-- TabLayout -->
+    <string name="all_song_tab">所有歌曲</string>
+    <string name="user_song_tab">已点歌曲</string>
 </resources>

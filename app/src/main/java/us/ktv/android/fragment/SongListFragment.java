@@ -74,9 +74,6 @@ public class SongListFragment extends BaseListFragment<Song> {
         SongHelper songHelper = SongHelper.getInstance(MicApplication.getInstance());
         list = songHelper.queryListByRoomId(roomId);
         RoomHelper roomHelper = RoomHelper.getInstance(MicApplication.getInstance());
-        Room room = roomHelper.queryById(roomId);
-        TextView toolBarTitle = (TextView) view.findViewById(R.id.toolbar_title);
-        toolBarTitle.setText(room.name);
         updateAdapter();
         //refresh();
         autoRefresh();

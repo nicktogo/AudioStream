@@ -1,6 +1,7 @@
 package us.ktv.android.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 import us.ktv.android.R;
 import us.ktv.android.fragment.BaseListFragment;
 import us.ktv.android.fragment.PlaySongFragment;
+import us.ktv.android.fragment.RoomFragment;
 import us.ktv.android.fragment.RoomListFragment;
 import us.ktv.android.fragment.SongListFragment;
 import us.ktv.android.transition.SongTransition;
@@ -28,7 +30,11 @@ import us.ktv.database.datamodel.Room;
 import us.ktv.database.datamodel.Song;
 
 
-public class MainActivity extends AppCompatActivity implements BaseListFragment.OnFragmentInteractionListener {
+public class MainActivity
+        extends AppCompatActivity
+        implements
+        BaseListFragment.OnFragmentInteractionListener,
+        RoomFragment.OnFragmentInteractionListener {
 
     private static final int REQUEST_ROOM_ID = 1;
 
@@ -101,7 +107,24 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
     public void onFragmentInteraction(Object o, View view) {
         if (o instanceof Room) {
             Room room = (Room) o;
-            SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, room.id);
+//            SongListFragment fragment = SongListFragment.newInstance(R.layout.item_song, room.id);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                fragment.setSharedElementEnterTransition(new SongTransition());
+//                fragment.setEnterTransition(new Fade());
+//                fragment.setSharedElementReturnTransition(new SongTransition());
+//                TextView roomName = (TextView) view.findViewById(R.id.name);
+//                getSupportFragmentManager().beginTransaction()
+//                        .addSharedElement(roomName, getString(R.string.toolbar_title_transition_name))
+//                        .replace(R.id.container, fragment)
+//                        .addToBackStack(null)
+//                        .commit();
+//            } else {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.container, fragment)
+//                        .addToBackStack(null)
+//                        .commit();
+//            }
+            RoomFragment fragment = RoomFragment.newInstance(room.id);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 fragment.setSharedElementEnterTransition(new SongTransition());
                 fragment.setEnterTransition(new Fade());
@@ -118,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
                         .addToBackStack(null)
                         .commit();
             }
+
         } else if (o instanceof Song) {
             Song song = (Song) o;
             PlaySongFragment fragment = PlaySongFragment.newInstance(song.id);
@@ -152,5 +176,10 @@ public class MainActivity extends AppCompatActivity implements BaseListFragment.
     public void showSnackbar(String msg) {
         View coordinatorLayout = this.findViewById(R.id.coordinator_layout);
         Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
