@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -42,7 +43,7 @@ public class AddRoomActivity extends AppCompatActivity {
 
     // UI references.
     @InjectView(R.id.room_id)
-    protected AutoCompleteTextView mIpPortView;
+    protected TextInputEditText mIpPortView;
 
     @InjectView(R.id.add_room_progress)
     protected View mProgressView;
@@ -188,7 +189,7 @@ public class AddRoomActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Presenter presenter = Presenter.getPresenter();
+            Presenter presenter = Presenter.getPresenter(ip, port);
             isConnected = presenter.connect(ip, port, listener);
             return ip + ":" + port;
         }

@@ -1,5 +1,6 @@
 package us.ktv.android;
 
+import com.google.common.net.PercentEscaper;
 import com.google.gson.internal.Streams;
 
 import us.ktv.database.datamodel.Room;
@@ -15,14 +16,26 @@ public class Presenter {
     private RecordSocketHelper recordSocketHelper;
 
     private static Presenter presenter;
+    private static String ip;
+    private static int port;
 
     private Presenter() {
-        helper = new SocketHelper();
-        recordSocketHelper = new RecordSocketHelper();
+        helper = new SocketHelper(ip, port);
+        recordSocketHelper = new RecordSocketHelper(ip, port + 1);
     }
 
     public synchronized static Presenter getPresenter() {
         if (presenter == null) {
+            presenter = new Presenter();
+
+        }
+        return presenter;
+    }
+
+    public synchronized static Presenter getPresenter(String roomIp, int roomPort) {
+        if (presenter == null) {
+            ip = roomIp;
+            port = roomPort;
             presenter = new Presenter();
 
         }

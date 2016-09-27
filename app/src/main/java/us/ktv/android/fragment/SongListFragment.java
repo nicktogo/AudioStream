@@ -80,7 +80,7 @@ public class SongListFragment extends BaseListFragment<Song> {
         super.onViewCreated(view, savedInstanceState);
         getData(isAll);
         //refresh();
-        //autoRefresh();
+        autoRefresh();
     }
 
     protected void getData(boolean isAll) {
@@ -158,8 +158,10 @@ public class SongListFragment extends BaseListFragment<Song> {
 
             @Override
             protected void onPostExecute(final Boolean isRefreshed) {
-                list = SongHelper.getInstance(MicApplication.getInstance()).queryListByRoomId(roomId);
-                updateAdapter();
+                if (!isAll) {
+                    list = SongHelper.getInstance(MicApplication.getInstance()).queryListByRoomId(roomId);
+                    updateAdapter();
+                }
                 swipeToLoadLayout.post(new Runnable() {
                     @Override
                     public void run() {

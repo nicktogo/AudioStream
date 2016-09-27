@@ -66,6 +66,7 @@ public class RoomFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             roomId = getArguments().getString(ROOM_ID);
+            Presenter.getPresenter(roomId.split(":")[0], Integer.parseInt(roomId.split(":")[1]));
         }
     }
 
@@ -118,8 +119,10 @@ public class RoomFragment extends Fragment {
                                         @Override
                                         public void run() {
                                             item.setIcon(R.drawable.ic_mic_white_24dp);
+                                            ((MainActivity) getActivity()).showSnackbar("麦克风已经开启");
                                         }
                                     });
+                                    isStarted = true;
                                 }
 
                                 @Override
@@ -135,11 +138,12 @@ public class RoomFragment extends Fragment {
                                     }
                                 }
                             });
-                            isStarted = true;
+//                            isStarted = true;
                             Log.d("RoomFragment", "start");
                         } else {
                             Presenter.getPresenter().stopRecord();
                             item.setIcon(R.drawable.ic_mic_none_white_24dp);
+                            ((MainActivity) getActivity()).showSnackbar("麦克风已经关闭");
                             isStarted = false;
                             Log.d("RoomFragment", "stop");
                         }

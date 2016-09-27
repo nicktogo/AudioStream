@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.PortUnreachableException;
 import java.net.Socket;
 
 /**
@@ -26,6 +27,14 @@ public class SocketHelper {
 
     private boolean isPlaying;
 
+    private String ip;
+    private int port;
+
+    public SocketHelper(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
+    }
+
     /**
      *  connect operation should not be performed from another thread,
      *  this method already invoked from a background thread,
@@ -39,12 +48,11 @@ public class SocketHelper {
     public boolean connect(final String ip, final int port, final SocketCallbackListener listener) {
         if (socket == null) {
             try {
-                socket = new Socket();
-                socket.connect(new InetSocketAddress(ip, port), 60000);
-                socketOutput = new DataOutputStream(socket.getOutputStream());
-                socketInput = new DataInputStream(socket.getInputStream());
-                //TODO
-                //send get song list request and receive json
+//                socket = new Socket();
+//                socket.connect(new InetSocketAddress(ip, port), 60000);
+//                socketOutput = new DataOutputStream(socket.getOutputStream());
+//                socketInput = new DataInputStream(socket.getInputStream());
+                initSocket();
                 socketOutput.writeUTF("GET@SONGLIST");
                 String songList;
                 while (true) {
@@ -60,6 +68,13 @@ public class SocketHelper {
             }
         }
         return isConnected;
+    }
+
+    private void initSocket() throws IOException {
+        socket = new Socket();
+        socket.connect(new InetSocketAddress(ip, port), 5000);
+        socketOutput = new DataOutputStream(socket.getOutputStream());
+        socketInput = new DataInputStream(socket.getInputStream());
     }
 
     public void startRecord(String songName, final SocketCallbackListener listener) {
@@ -142,6 +157,9 @@ public class SocketHelper {
 
     public boolean startPlay(String songName, SocketCallbackListener listener) {
         try {
+            if (socket == null) {
+                initSocket();
+            }
             socketOutput.writeUTF("PLAY@" + songName);
             // 验证是否播放 TODO 后端修改
             // setPlaying(socketInput.readBoolean());
@@ -161,6 +179,9 @@ public class SocketHelper {
     public void stopPlaying(SocketCallbackListener listener) {
         // setPlaying(false);
         try {
+            if (socket == null) {
+                initSocket();
+            }
             socketOutput.writeUTF("STOP");
             // 验证是否停止 TODO 后端修改
             // setPlaying(socketInput.readBoolean());
@@ -176,6 +197,9 @@ public class SocketHelper {
 
     public void addSong(String songName, SocketCallbackListener listener) {
         try {
+            if (socket == null) {
+                initSocket();
+            }
             socketOutput.writeUTF("ADD@" + songName);
             listener.onConnect(null, null);
         } catch (IOException e) {
@@ -189,6 +213,9 @@ public class SocketHelper {
 
     public boolean refresh(String roomId, SocketCallbackListener listener) {
         try {
+            if (socket == null) {
+                initSocket();
+            }
             socketOutput.writeUTF("REFRESH");
             String songList;
             while (true) {
